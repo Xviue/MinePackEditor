@@ -14,5 +14,13 @@ namespace MinePackEditor.Views
             vm.RequestClose += (_, _) => Close();
             DataContext = vm;
         }
+
+        private void Darg(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            {
+                this.BeginMoveDrag(e);
+            }
+        }
     }
 }

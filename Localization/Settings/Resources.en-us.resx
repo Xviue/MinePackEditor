@@ -210,4 +210,10 @@
   <data name="SearchResultSuffix" xml:space="preserve">
     <value>"</value>
   </data>
+  <data name="Lang.SimplifiedChinese" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="Lang.English" xml:space="preserve">
+    <value>English(US)</value>
+  </data>
 </root>

@@ -72,7 +72,7 @@ public partial class SettingsWindowViewModel : ObservableObject
     {
         _menuBuilder.RegisterOptions("AvailableLanguages", new List<SettingOption>
         {
-            new() { LabelKey = "Lang.Chinese", Value = "zh-hans" },
+            new() { LabelKey = "Lang.SimplifiedChinese", Value = "zh-hans" },
             new() { LabelKey = "Lang.English", Value = "en-us" }
         });
 

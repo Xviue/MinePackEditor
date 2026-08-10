@@ -6,25 +6,43 @@
              xmlns:selectors="using:MinePackEditor.Selectors"
              xmlns:settings="using:MinePackEditor.Models.Settings"
              mc:Ignorable="d"
-             d:DesignWidth="800" d:DesignHeight="180"
+             d:DesignWidth="800" d:DesignHeight="150"
              x:Class="MinePackEditor.Controls.UserControls.SettingItemControl"
              x:DataType="settings:SettingItem">
     <Design.DataContext>
-        <x:Static Member="designs:DesignTimeSettingItem.SliderExample" />
+        <x:Static Member="designs:DesignTimeSettingItem.ComboExample" />
     </Design.DataContext>
 
-    <Border Margin="0,6" Padding="14,12"
-            Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-            CornerRadius="8"
+    <UserControl.Resources>
+        <ControlTheme TargetType="Border" x:Key="MarkedBorder">
+            <Setter Property="Background" Value="Transparent" />
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="{DynamicResource BgInBrush}" />
+            </Style>
+        </ControlTheme>
+    </UserControl.Resources>
+
+    <Border Background="{DynamicResource DefaultBackgroundBrush}">
+        <Border Margin="0,6,0,0" Padding="14,12"
+            CornerRadius="8" Theme="{StaticResource MarkedBorder}"
             BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
             BorderThickness="1">
+        <Border.Transitions>
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.1" />
+            </Transitions>
+        </Border.Transitions>
         <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="6">
 
             <!-- 标题与描述 -->
             <StackPanel Grid.Row="0">
-                <TextBlock Text="{Binding DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
+                <Panel >
+                    <TextBlock Text="{Binding DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
                            FontSize="14" FontWeight="SemiBold"
                            Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                    <TextBlock Text="{Binding Id}" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                </Panel>
                 <TextBlock Text="{Binding DescriptionKey, Converter={StaticResource ConfigLocConverter}}"
                            FontSize="11"
                            Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
@@ -44,5 +62,6 @@
                        Foreground="{DynamicResource SystemControlForegroundBaseLowBrush}"
                        IsVisible="{Binding DefaultValue, Converter={StaticResource NullToVisConv}}" />
         </Grid>
+    </Border>
     </Border>
 </UserControl>

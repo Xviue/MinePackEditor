@@ -19,7 +19,7 @@
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainViewModel />
     </Design.DataContext>
 
@@ -46,19 +46,19 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="CornerRadius" Value="5" />
-            
+
             <Setter Property="Transitions">
                 <Transitions>
                     <BrushTransition Property="Background" Duration="0:0:0.1"/>
                     <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
                 </Transitions>
             </Setter>
-            
+
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#E81123"/>
                 <Setter Property="Foreground" Value="White"/>
             </Style>
-            
+
             <Style Selector="^:pressed">
                 <Setter Property="Background" Value="#F1707A"/>
             </Style>
@@ -68,19 +68,19 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="CornerRadius" Value="5" />
-            
+
             <Setter Property="Transitions">
                 <Transitions>
                     <BrushTransition Property="Background" Duration="0:0:0.1"/>
                     <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
                 </Transitions>
             </Setter>
-            
+
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#C7C7C7"/>
                 <Setter Property="Foreground" Value="White"/>
             </Style>
-            
+
             <Style Selector="^:pressed">
                 <Setter Property="Background" Value="#ABABAB"/>
             </Style>
@@ -92,12 +92,12 @@
             <Setter Property="CornerRadius" Value="5" />
             <Setter Property="Padding" Value="4,2,4,2" />
             <Setter Property="Margin" Value="2,0,2,0" />
-            
-            
+
+
             <Style Selector="^:pointerover">
                 <Setter Property="Background" Value="#C7C7C7"/>
             </Style>
-            
+
             <Style Selector="^:pressed">
                 <Setter Property="Background" Value="#ABABAB"/>
             </Style>
@@ -115,159 +115,159 @@
 
         <Grid x:Name="TitleBarGird" Grid.Row="0">
             <Grid ColumnDefinitions="Auto,1*">
-                <Menu FontSize="13">
-                <MenuItem Header="文件(_F)" >
-                    <MenuItem Header="新建(_N)" />
-                    <MenuItem Header="打开文件夹(_O)" >
-                        <MenuItem Header="文件夹(_D)" InputGesture="Ctrl+Alt+Shift+O"
-                                  Command="{Binding DirectorySetCommand}"/>
-                        <MenuItem Header="文件(_F)" InputGesture="Ctrl+O"
-                                  Command="{Binding OpenFilesCommand}"/>
-                        <MenuItem Header="工作区(_P)" InputGesture="Ctrl+Shift+O" />
-                    </MenuItem>
-                    <MenuItem Header="添加" InputGesture="Ctrl+D">
-                        <MenuItem Header="文件夹(_D)"
-                                  Command="{Binding DirectoryOpenCommand}" />
-                        <MenuItem Header="工作区(_P)" />
-                    </MenuItem>
+                <Menu FontSize="13" FontFamily="MiSans">
+                    <MenuItem Header="文件(_F)" >
+                        <MenuItem Header="新建(_N)" />
+                        <MenuItem Header="打开文件夹(_O)" >
+                            <MenuItem Header="文件夹(_D)" InputGesture="Ctrl+Alt+Shift+O"
+                                      Command="{Binding DirectorySetCommand}"/>
+                            <MenuItem Header="文件(_F)" InputGesture="Ctrl+O"
+                                      Command="{Binding OpenFilesCommand}"/>
+                            <MenuItem Header="工作区(_P)" InputGesture="Ctrl+Shift+O" />
+                        </MenuItem>
+                        <MenuItem Header="添加" InputGesture="Ctrl+D">
+                            <MenuItem Header="文件夹(_D)"
+                                      Command="{Binding DirectoryOpenCommand}" />
+                            <MenuItem Header="工作区(_P)" />
+                        </MenuItem>
 
-                    <Separator />
+                        <Separator />
 
-                    <MenuItem Header="{uiloc:Loc Key=Menu.File.Save}" InputGesture="Ctrl+S" Command="{Binding SaveCurrentCommand}" />
-                    <MenuItem Header="另存为" />
-                    <MenuItem Header="{uiloc:Loc Key=Menu.File.Save-all}" InputGesture="Ctrl+Shift+S" Command="{Binding SaveAllCommand}">
+                        <MenuItem Header="{uiloc:Loc Key=Menu.File.Save}" InputGesture="Ctrl+S" Command="{Binding SaveCurrentCommand}" />
+                        <MenuItem Header="另存为" />
+                        <MenuItem Header="{uiloc:Loc Key=Menu.File.Save-all}" InputGesture="Ctrl+Shift+S" Command="{Binding SaveAllCommand}">
 
-                    </MenuItem>
+                        </MenuItem>
 
-                    <Separator />
+                        <Separator />
 
-                    <MenuItem Header="关闭" InputGesture="Ctrl+S">
-                    </MenuItem>
-                    <MenuItem Header="退出" InputGesture="Alt+F4" Command="{Binding ExitCommand}">
-                    </MenuItem>
-                    </MenuItem>
-
-                <MenuItem Header="编辑(_E)">
-                    <MenuItem Header="转到">
-                        <MenuItem Header="转到行" />
-                        <MenuItem Header="转到文本" />
-                        <MenuItem Header="转到文件" />
-                    </MenuItem>
-                    <MenuItem Header="查找和替换">
-                        <MenuItem Header="查找" InputGesture="Ctrl+F" />
-                        <MenuItem Header="替换" InputGesture="Ctrl+R" />
-                        <MenuItem Header="在文件中查找" InputGesture="Shift+Ctrl+F" />
-                        <MenuItem Header="在文件中替换" InputGesture="Shift+Ctrl+R" />
-                    </MenuItem>
-                    
-                    <Separator />
-                    <MenuItem Header="撤销" InputGesture="Ctrl+Z" />
-                    <MenuItem Header="重做" InputGesture="Ctrl+Y" />
-
-                    <Separator />
-
-                    <MenuItem Header="复制" InputGesture="Ctrl+C" />
-                    <MenuItem Header="剪贴" InputGesture="Ctrl+X" />
-                    <MenuItem Header="粘贴" InputGesture="Ctrl+V" />
-                    <MenuItem Header="全选" InputGesture="Ctrl+A" />
-                    <MenuItem Header="删除" InputGesture="Ctrl+D" />
-
-                </MenuItem>
-                <MenuItem Header="视图(_V)">
-                
-                </MenuItem>
-                <MenuItem Header="项目(_P)">
-                
-                </MenuItem>
-
-                <MenuItem Header="生成(_G)">
-                
-                </MenuItem>
-
-                <MenuItem Header="工具(_T)">
-                    <MenuItem Header="设置" InputGesture="Ctrl+Shift+I" 
-                              Command="{Binding OpenSettingsWindowCommand}">
-                    </MenuItem>
-                
-                    <MenuItem Header="项目设置" InputGesture="Ctrl+I">
+                        <MenuItem Header="关闭" InputGesture="Ctrl+S">
+                        </MenuItem>
+                        <MenuItem Header="退出" InputGesture="Alt+F4" Command="{Binding ExitCommand}">
+                        </MenuItem>
                     </MenuItem>
 
-                    <Separator />
-                </MenuItem>
+                    <MenuItem Header="编辑(_E)">
+                        <MenuItem Header="转到">
+                            <MenuItem Header="转到行" />
+                            <MenuItem Header="转到文本" />
+                            <MenuItem Header="转到文件" />
+                        </MenuItem>
+                        <MenuItem Header="查找和替换">
+                            <MenuItem Header="查找" InputGesture="Ctrl+F" />
+                            <MenuItem Header="替换" InputGesture="Ctrl+R" />
+                            <MenuItem Header="在文件中查找" InputGesture="Shift+Ctrl+F" />
+                            <MenuItem Header="在文件中替换" InputGesture="Shift+Ctrl+R" />
+                        </MenuItem>
 
-                <MenuItem Header="窗口(_W)">
-                
-                </MenuItem>
+                        <Separator />
+                        <MenuItem Header="撤销" InputGesture="Ctrl+Z" />
+                        <MenuItem Header="重做" InputGesture="Ctrl+Y" />
 
-                <MenuItem Header="帮助(_H)">
-                    <MenuItem Header="关于软件(_A)" Command="{Binding OpenAboutCommand}" />
-                </MenuItem>
+                        <Separator />
+
+                        <MenuItem Header="复制" InputGesture="Ctrl+C" />
+                        <MenuItem Header="剪贴" InputGesture="Ctrl+X" />
+                        <MenuItem Header="粘贴" InputGesture="Ctrl+V" />
+                        <MenuItem Header="全选" InputGesture="Ctrl+A" />
+                        <MenuItem Header="删除" InputGesture="Ctrl+D" />
+
+                    </MenuItem>
+                    <MenuItem Header="视图(_V)">
+
+                    </MenuItem>
+                    <MenuItem Header="项目(_P)">
+
+                    </MenuItem>
+
+                    <MenuItem Header="生成(_G)">
+
+                    </MenuItem>
+
+                    <MenuItem Header="工具(_T)">
+                        <MenuItem Header="设置" InputGesture="Ctrl+Shift+I"
+                                  Command="{Binding OpenSettingsWindowCommand}">
+                        </MenuItem>
+
+                        <MenuItem Header="项目设置" InputGesture="Ctrl+I">
+                        </MenuItem>
+
+                        <Separator />
+                    </MenuItem>
+
+                    <MenuItem Header="窗口(_W)">
+
+                    </MenuItem>
+
+                    <MenuItem Header="帮助(_H)">
+                        <MenuItem Header="关于软件(_A)" Command="{Binding OpenAboutCommand}" />
+                    </MenuItem>
                 </Menu>
 
                 <!-- 除了菜单的部分设置检测-->
                 <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                   PointerPressed="TitleBar_PointerPressed" Grid.Column="1" Background="{DynamicResource BackgroundBrush}"
-                   DoubleTapped="TitleBar_DoubleTapped"/>
+                       PointerPressed="TitleBar_PointerPressed" Grid.Column="1" Background="{DynamicResource BackgroundBrush}"
+                       DoubleTapped="TitleBar_DoubleTapped"/>
             </Grid>
 
             <!-- Title -->
             <Border Background="{DynamicResource TitleBackgroundBrush}" BorderBrush="{DynamicResource DefaultBorderBrush}"
                     Padding="2,1,2,1"
-                    CornerRadius="2" 
+                    CornerRadius="2"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="2,0,0,2" 
-                           Foreground="{DynamicResource DefaultTextFgBrush}" 
-                           Text="{Binding ProjectName}" 
+                <TextBlock Margin="2,0,0,2"
+                           Foreground="{DynamicResource DefaultTextFgBrush}"
+                           Text="{Binding ProjectName}"
                            FontWeight="Bold"
                            VerticalAlignment="Center" />
             </Border>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,-2,0"
-                    DockPanel.Dock="Right">
-            <Button Width="30" Height="30" 
-                    Click="MinimizeBtn_Click" Theme="{StaticResource CaptionButtonTheme}" >
-                <Canvas Width="10" Height="10">
-                <Rectangle Fill="{DynamicResource DefaultTextFgBrush}" Width="10" Height="1" Canvas.Top="5" />
-                </Canvas>
-            </Button>
-            <Button x:Name="MaximizeBtn" Width="30" Height="30" 
-                    Click="MaximizeBtn_Click" Theme="{StaticResource CaptionButtonTheme}">
-                <Canvas Width="10" Height="10">
-                <Rectangle Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1" 
-                   Width="9" Height="9" Canvas.Left="1" Canvas.Top="1" />
-                </Canvas>
-            </Button>
-            <Button Width="30" Height="30" Command="{Binding ExitCommand}"
-                    Theme="{StaticResource CloseButtonTheme}">
-                <Canvas Width="10" Height="10" Background="Transparent">
-                <Line StartPoint="1,1.5" EndPoint="9,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                <Line StartPoint="9,1.5" EndPoint="1,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                </Canvas>
-            </Button>
+                        DockPanel.Dock="Right">
+                <Button Width="30" Height="30"
+                        Click="MinimizeBtn_Click" Theme="{StaticResource CaptionButtonTheme}" >
+                    <Canvas Width="10" Height="10">
+                        <Rectangle Fill="{DynamicResource DefaultTextFgBrush}" Width="10" Height="1" Canvas.Top="5" />
+                    </Canvas>
+                </Button>
+                <Button x:Name="MaximizeBtn" Width="30" Height="30"
+                        Click="MaximizeBtn_Click" Theme="{StaticResource CaptionButtonTheme}">
+                    <Canvas Width="10" Height="10">
+                        <Rectangle Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1"
+                                   Width="9" Height="9" Canvas.Left="1" Canvas.Top="1" />
+                    </Canvas>
+                </Button>
+                <Button Width="30" Height="30" Command="{Binding ExitCommand}"
+                        Theme="{StaticResource CloseButtonTheme}">
+                    <Canvas Width="10" Height="10" Background="Transparent">
+                        <Line StartPoint="1,1.5" EndPoint="9,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
+                        <Line StartPoint="9,1.5" EndPoint="1,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
+                    </Canvas>
+                </Button>
             </StackPanel>
 
         </Grid>
 
         <!-- 工具栏 -->
         <Grid Grid.Row="1" ColumnDefinitions="Auto,1*">
-            <Border Grid.Column="0" ClipToBounds="True" 
-                Margin="2,4,2,4" Width="600"
-                Background="{DynamicResource ToolbarBgBrush}" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0.7"
-                CornerRadius="3" HorizontalAlignment="Left">
+            <Border Grid.Column="0" ClipToBounds="True"
+                    Margin="2,4,2,4" Width="600"
+                    Background="{DynamicResource ToolbarBgBrush}" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0.7"
+                    CornerRadius="3" HorizontalAlignment="Left">
                 <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left" FlowDirection="LeftToRight">
                     <CommandBarButton Label="全部保存" Command="{Binding SaveAllCommand}">
                         <CommandBarButton.Icon>
-                           <Viewbox Width="20" Height="20">
+                            <Viewbox Width="20" Height="20">
                                 <Image Source="/Assets/ToolsIcons/save.png"/>
-                           </Viewbox>
+                            </Viewbox>
                         </CommandBarButton.Icon>
                     </CommandBarButton>
 
                     <CommandBarButton Label="编译">
                         <CommandBarButton.Icon>
-                           <Viewbox Width="20" Height="20">
+                            <Viewbox Width="20" Height="20">
                                 <Image Source="/Assets/ToolsIcons/code.png"/>
-                           </Viewbox>
+                            </Viewbox>
                         </CommandBarButton.Icon>
                     </CommandBarButton>
 
@@ -280,165 +280,166 @@
                    PointerPressed="TitleBar_PointerPressed" Grid.Column="1"
                    DoubleTapped="TitleBar_DoubleTapped"/>
         </Grid>
-       
-            
+
+
         <Border CornerRadius="4"
                 Grid.Row="2" Margin="1,3,1,1" ClipToBounds="True">
             <!-- 下界面 -->
 
             <!-- 左侧 资源管理器-->
             <Grid ColumnDefinitions="2*,3,9*">
-            <Border Margin="2,0,3,0" Grid.Column="0" 
-                    BorderBrush="{DynamicResource DefaultBorderBrush}" 
-                    BorderThickness="1" CornerRadius="3">
-                <Grid RowDefinitions="Auto,1*" Grid.Column="0">
-                    <TextBlock Grid.Row="0" Text="资源管理器" Margin="7,7,0,2" />
-                    <Grid Grid.Row="1">
-                         <TreeView x:Name="FileTree" ItemsSource="{Binding OpenDirectories}" 
-                              DoubleTapped="FileTree_DoubleTapped">
-                            <TreeView.ItemTemplate>
-                                <TreeDataTemplate 
-                                    DataType="{x:Type models:FileSystemNode}"
-                                    ItemsSource="{Binding Children}">
+                <Border Margin="2,0,3,0" Grid.Column="0"
+                        BorderBrush="{DynamicResource DefaultBorderBrush}"
+                        BorderThickness="1" CornerRadius="3">
+                    <Grid RowDefinitions="Auto,1*" Grid.Column="0">
+                        <TextBlock Grid.Row="0" Text="资源管理器" Margin="7,7,0,2" />
+                        <Grid Grid.Row="1">
+                            <TreeView x:Name="FileTree" ItemsSource="{Binding OpenDirectories}"
+                                      DoubleTapped="FileTree_DoubleTapped">
+                                <TreeView.ItemTemplate>
+                                    <TreeDataTemplate
+                                        DataType="{x:Type models:FileSystemNode}"
+                                        ItemsSource="{Binding Children}">
 
-                                    <DockPanel>
-                                        <Viewbox Height="15" Width="15" VerticalAlignment="Center">
-                                            <Image>
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource FileIconMultiConverter}">
-                                                        <Binding Path="." />
-                                                        <Binding Path="IsExpanded" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Viewbox>
-                                        <TextBlock Margin="5,0,0,0" Text="{Binding Name}" FontSize="12"
-                                                   VerticalAlignment="Center"/>
-                                    </DockPanel>
+                                        <DockPanel>
 
-                                </TreeDataTemplate>
+                                            <Viewbox Height="15" Width="15" VerticalAlignment="Center">
+                                                <Image>
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource FileIconMultiConverter}">
+                                                            <Binding Path="." />
+                                                            <Binding Path="IsExpanded" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Viewbox>
+                                            <TextBlock Margin="5,0,0,0" Text="{Binding Name}" FontSize="12"
+                                                       VerticalAlignment="Center"/>
+                                        </DockPanel>
 
-                            </TreeView.ItemTemplate>
+                                    </TreeDataTemplate>
 
-                            <TreeView.Styles>
-                                <Style Selector="TreeViewItem" x:DataType="models:FileSystemNode">
-                                    <Setter Property="IsExpanded" 
-                                            Value="{Binding IsExpanded, Mode=TwoWay}"/>
-                                </Style>
-                            </TreeView.Styles>
-                        </TreeView>
+                                </TreeView.ItemTemplate>
+
+                                <TreeView.Styles>
+                                    <Style Selector="TreeViewItem" x:DataType="models:FileSystemNode">
+                                        <Setter Property="IsExpanded"
+                                                Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                    </Style>
+                                </TreeView.Styles>
+                            </TreeView>
+                        </Grid>
                     </Grid>
+                </Border>
+                <GridSplitter Grid.Column="1" Width="3"
+                              ResizeDirection="Columns" Background="{DynamicResource BackgroundBrush}"/>
+
+                <Grid Grid.Column="2"
+                      RowDefinitions="1*,3,170">
+                    <Border Grid.Row="0" Margin="2,0,2,3"
+                            BorderBrush="#2d2855" BorderThickness="1" CornerRadius="4">
+                        <Grid>
+                            <!--- 编辑区域 -->
+                            <TabControl ItemsSource="{Binding OpenFiles}"
+                                        FontSize="14" SelectedItem="{Binding SelectedDocument}">
+                                <TabControl.Styles>
+                                    <Style Selector="TabItem">
+                                        <Setter Property="Background" Value="#ebebeb"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Setter Property="Padding" Value="10,0,5,0"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="CornerRadius" Value="4" />
+                                        <Setter Property="MinHeight" Value="25" />
+                                        <Setter Property="Template">
+                                            <ControlTemplate>
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="{TemplateBinding CornerRadius}">
+                                                    <ContentPresenter Content="{TemplateBinding Header}"
+                                                                      ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                                      Margin="{TemplateBinding Padding}" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter>
+                                    </Style>
+
+                                    <Style Selector="TabItem:selected">
+                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="BorderBrush" Value="#2d2855" />
+                                        <Setter Property="BorderThickness" Value="1" />
+                                    </Style>
+
+                                    <Style Selector="TabItem:pointerover">
+                                        <Setter Property="Background" Value="#c8c8c8"/>
+                                    </Style>
+
+                                    <!--- TabItem Close Button -->
+                                    <Style Selector="TabItem Button">
+                                        <Setter Property="IsVisible" Value="False"/>
+                                    </Style>
+
+                                    <Style Selector="TabItem:selected Button">
+                                        <Setter Property="IsVisible" Value="True"/>
+                                    </Style>
+
+                                    <Style Selector="TabItem:pointerover Button">
+                                        <Setter Property="IsVisible" Value="True"/>
+                                    </Style>
+                                </TabControl.Styles>
+
+                                <TabControl.ItemTemplate>
+                                    <DataTemplate DataType="models:FileDocument">
+                                        <StackPanel Orientation="Horizontal" Spacing="8"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       Text="{Binding DisplayName}" FontSize="12" />
+                                            <Button HorizontalAlignment="Center"
+                                                    Width="20" Height="20"
+                                                    Background="Transparent" BorderThickness="0"
+                                                    x:DataType="vm:MainViewModel"
+                                                    Command="{Binding $parent[TabControl].DataContext.CloseTabCommand}"
+                                                    CommandParameter="{Binding}">
+                                                <Canvas Width="10" Height="10"
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                        Background="Transparent">
+                                                    <Line StartPoint="1,1.5" EndPoint="9,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
+                                                    <Line StartPoint="9,1.5" EndPoint="1,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
+                                                </Canvas>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <ContentControl Content="{Binding}"
+                                                        ContentTemplate="{StaticResource FileEditorSelector}" />
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                            </TabControl>
+                        </Grid>
+                    </Border>
+
+
+                    <GridSplitter Grid.Row="1" Height="3"
+                                  ResizeDirection="Rows" Background="{DynamicResource BackgroundBrush}"/>
+
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource DefaultBorderBrush}"
+                            BorderThickness="1">
+
+                    </Border>
                 </Grid>
-            </Border>
-            <GridSplitter Grid.Column="1" Width="3"
-                          ResizeDirection="Columns" Background="{DynamicResource BackgroundBrush}"/>
-
-            <Grid Grid.Column="2"
-                  RowDefinitions="1*,3,170">
-                <Border Grid.Row="0" Margin="2,0,2,3"
-                        BorderBrush="#2d2855" BorderThickness="1" CornerRadius="4">
-                    <Grid>
-                        <!--- 编辑区域 -->
-                        <TabControl ItemsSource="{Binding OpenFiles}" 
-                                    FontSize="14" SelectedItem="{Binding SelectedDocument}">
-                            <TabControl.Styles>
-                                <Style Selector="TabItem">
-                                    <Setter Property="Background" Value="#ebebeb"/>
-                                    <Setter Property="Foreground" Value="Black"/>
-                                    <Setter Property="Padding" Value="10,0,5,0"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="CornerRadius" Value="4" />
-                                    <Setter Property="MinHeight" Value="25" />
-                                    <Setter Property="Template">
-                                        <ControlTemplate>
-                                            <Border Background="{TemplateBinding Background}"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    CornerRadius="{TemplateBinding CornerRadius}">
-                                                <ContentPresenter Content="{TemplateBinding Header}" 
-                                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                                                  Margin="{TemplateBinding Padding}" />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter>
-                                </Style>
-
-                                <Style Selector="TabItem:selected">
-                                    <Setter Property="Background" Value="#F0F0F0"/>
-                                    <Setter Property="Foreground" Value="Black"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="BorderBrush" Value="#2d2855" />
-                                    <Setter Property="BorderThickness" Value="1" />
-                                </Style>
-
-                                <Style Selector="TabItem:pointerover">
-                                    <Setter Property="Background" Value="#c8c8c8"/>
-                                </Style>
-
-                                <!--- TabItem Close Button -->
-                                <Style Selector="TabItem Button">
-                                    <Setter Property="IsVisible" Value="False"/>
-                                </Style>
-
-                                <Style Selector="TabItem:selected Button">
-                                    <Setter Property="IsVisible" Value="True"/>
-                                </Style>
-
-                                <Style Selector="TabItem:pointerover Button">
-                                    <Setter Property="IsVisible" Value="True"/>
-                                </Style>
-                            </TabControl.Styles>
-
-                            <TabControl.ItemTemplate>
-                                <DataTemplate DataType="models:FileDocument">
-                                    <StackPanel Orientation="Horizontal" Spacing="8"  
-                                                HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <TextBlock HorizontalAlignment="Center" 
-                                                   Text="{Binding DisplayName}" FontSize="12" />
-                                        <Button HorizontalAlignment="Center" 
-                                                Width="20" Height="20" 
-                                                Background="Transparent" BorderThickness="0"
-                                                x:DataType="vm:MainViewModel"
-                                                Command="{Binding $parent[TabControl].DataContext.CloseTabCommand}"
-                                                CommandParameter="{Binding}">
-                                            <Canvas Width="10" Height="10" 
-                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                    Background="Transparent">
-                                                <Line StartPoint="1,1.5" EndPoint="9,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                                                <Line StartPoint="9,1.5" EndPoint="1,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                                            </Canvas>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </TabControl.ItemTemplate>
-
-                            <TabControl.ContentTemplate>
-                                <DataTemplate>
-                                    <ContentControl Content="{Binding}" 
-                                                    ContentTemplate="{StaticResource FileEditorSelector}" />
-                                </DataTemplate>
-                            </TabControl.ContentTemplate>
-                        </TabControl>
-                    </Grid>
-                </Border>
-                
-
-                <GridSplitter Grid.Row="1" Height="3"
-                          ResizeDirection="Rows" Background="{DynamicResource BackgroundBrush}"/>
-
-                <Border Grid.Row="2" BorderBrush="{DynamicResource DefaultBorderBrush}"
-                        BorderThickness="1">
-                    
-                </Border>
             </Grid>
-        </Grid>
         </Border>
 
         <Grid Grid.Row="3" Background="{DynamicResource TipbarBgBrush}">
-            <Label Margin="2,0,0,0" Content="{Binding ActionLabelText}" 
+            <Label Margin="2,0,0,0" Content="{Binding ActionLabelText}"
                    Foreground="{DynamicResource NDefaultTextFgBrush}" VerticalAlignment="Center"
                    Height="20" FontSize="11">
-                
+
             </Label>
         </Grid>
     </Grid>
