@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>MinePackEditor</RootNamespace>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Remove="Localization\LanguageManager.cs" />
+    <AvaloniaResource Remove="Localization\UI\Resources.en-us.resx" />
+    <AvaloniaResource Remove="Localization\UI\Resources.resx" />
+    <AvaloniaResource Remove="Localization\UI\Resources.zh-hans.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.1" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.1" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="12.0.0" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="FluentAvaloniaUI" Version="3.0.2" />
+    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.14" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\Settings\Resources.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\UI\Resources.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Viewers\ImageViewerView.axaml.cs">
+      <DependentUpon>ImageViewerView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SettingsWindow.axaml.cs">
+      <DependentUpon>SettingsWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Viewers\UnsupportedViewerView.axaml.cs">
+      <DependentUpon>UnsupportedViewerView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LICENSE\" />
+  </ItemGroup>
+</Project>

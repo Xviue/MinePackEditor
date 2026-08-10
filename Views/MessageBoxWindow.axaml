@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" 
+        Width="420" 
+        Height="180" 
+        MaxWidth="600"
+        MaxHeight="500"
+        SizeToContent="Manual"
+        CanResize="False"
+        x:Class="MinePackEditor.Views.MessageBoxWindow"
+        Title="Dialog"
+        WindowStartupLocation="CenterOwner"
+        WindowDecorations="BorderOnly"
+        RequestedThemeVariant="Default"
+        ExtendClientAreaToDecorationsHint="True"
+        Icon="">
+     <Border Padding="24" Background="{DynamicResource BackgroundBrush}" 
+             VerticalAlignment="Center" PointerPressed="Border_PointerPressed">
+        <StackPanel Spacing="16">
+          <!-- 图标 + 标题 -->
+          <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Top">
+            <Svg Name="Icon" Path="/Assets/DialogIcon/warn.svg"></Svg>
+            <TextBlock x:Name="TitleBlock" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Text="Title"/>
+          </StackPanel>
+
+          <!-- 内容 -->
+          <TextBlock x:Name="MessageBlock" TextWrapping="Wrap" LineHeight="22" Text="Message" />
+
+          <!-- 按钮 -->
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom"
+                      HorizontalAlignment="Right" Spacing="10" Margin="0,8,0,0">
+            <Button x:Name="YesBtn" Click="YesBtn_OnClick" Content="OK" />
+           <Button x:Name="NoBtn" Click="NoBtn_OnClick" Content="NO" />
+            <Button x:Name="CancelBtn" Click="CancelBtn_OnClick" Content="Cancel" IsCancel="True" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+</Window>

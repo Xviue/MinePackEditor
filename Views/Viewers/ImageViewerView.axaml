@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:MinePackEditor.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="using:MinePackEditor.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MinePackEditor.Views.ImageViewerView">
+
+    <Grid 
+          PointerWheelChanged="OnPointerWheelChanged"
+          PointerPressed="OnPointerPressed"
+          PointerMoved="OnPointerMoved"
+          PointerReleased="OnPointerReleased">
+
+            <Grid.Background>
+            <DrawingBrush TileMode="Tile" Stretch="None"
+                          DestinationRect="0,0,16,16">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <!-- 浅灰底色 -->
+                        <GeometryDrawing Brush="#CCCCCC">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="0,0,16,16"/>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <!-- 左上白色方块 -->
+                        <GeometryDrawing Brush="#FFFFFF">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="0,0,8,8"/>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <!-- 右下白色方块 -->
+                        <GeometryDrawing Brush="#FFFFFF">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="8,8,8,8"/>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </Grid.Background>
+
+        <Border x:Name="LoadingOverlay"
+                Background="#EEEEEE"
+                IsVisible="False"
+                ZIndex="10">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="12">
+                <ProgressBar IsIndeterminate="True"
+                             Width="120"
+                             Height="4"
+                             CornerRadius="2" />
+                <TextBlock Text="正在解码图片..."
+                           Foreground="Black"
+                           FontSize="13" />
+            </StackPanel>
+        </Border>
+        
+        <Image x:Name="ImageControl"
+               RenderTransformOrigin="0.5,0.5" />
+
+        <StackPanel Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="10"
+            Spacing="5">
+            <Button Content="−" Click="ZoomOut" Width="32" Height="32" />
+            <TextBox x:Name="ZoomText"
+                     Text="100%"
+                     Width="60"
+                     Height="28"
+                     VerticalAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Foreground="Black"
+                     BorderBrush="#dcdcdc"
+                     BorderThickness="1"
+                     CaretBrush="White"
+                     KeyDown="OnZoomTextKeyDown"
+                     ClearSelectionOnLostFocus="True"
+                     IsInactiveSelectionHighlightEnabled="True"
+                     LostFocus="OnZoomTextLostFocus" >
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.8" />
+                </TextBox.Background>
+
+            </TextBox>
+            <Button Content="+" Click="ZoomIn" Width="32" Height="32" />
+            <Button Content="R" FontSize="10" Click="ResetZoom" Width="32" Height="32" />
+        </StackPanel>
+    </Grid>
+</UserControl>
+

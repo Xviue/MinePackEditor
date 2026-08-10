@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:settings="using:MinePackEditor.Models.Settings"
+                    xmlns:converter="clr-namespace:MinePackEditor.Converters">
+    <DataTemplate x:Key="ComboBoxEditor" DataType="settings:SettingItem">
+        <ComboBox ItemsSource="{Binding Constraint.Options}"
+                  SelectedItem="{Binding SelectedOption, Mode=TwoWay}"
+                  HorizontalAlignment="Left"
+                  MinWidth="220">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="settings:SettingOption">
+                    <TextBlock Text="{Binding LabelKey, Converter={StaticResource ConfigLocConverter}}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+    </DataTemplate>
+</ResourceDictionary>

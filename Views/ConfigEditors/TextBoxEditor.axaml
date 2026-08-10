@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:settings="using:MinePackEditor.Models.Settings">
+    <Design.PreviewWith>
+        <TextBox Text="这是一个文本编辑器" />
+    </Design.PreviewWith>
+
+    <DataTemplate x:Key="TextBoxEditor" DataType="settings:SettingItem">
+        <TextBox Text="{Binding CurrentValue, Mode=TwoWay}" />
+    </DataTemplate>
+</ResourceDictionary>

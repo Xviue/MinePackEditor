@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:designs="using:MinePackEditor.Designs"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:selectors="using:MinePackEditor.Selectors"
+             xmlns:settings="using:MinePackEditor.Models.Settings"
+             mc:Ignorable="d"
+             d:DesignWidth="800" d:DesignHeight="180"
+             x:Class="MinePackEditor.Controls.UserControls.SettingItemControl"
+             x:DataType="settings:SettingItem">
+    <Design.DataContext>
+        <x:Static Member="designs:DesignTimeSettingItem.SliderExample" />
+    </Design.DataContext>
+
+    <Border Margin="0,6" Padding="14,12"
+            Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+            CornerRadius="8"
+            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+            BorderThickness="1">
+        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="6">
+
+            <!-- 标题与描述 -->
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="{Binding DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
+                           FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                <TextBlock Text="{Binding DescriptionKey, Converter={StaticResource ConfigLocConverter}}"
+                           FontSize="11"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                           TextWrapping="Wrap"
+                           IsVisible="{Binding DescriptionKey, Converter={StaticResource NullToVisConv}}" />
+            </StackPanel>
+
+            <!-- 动态编辑器：引用全局的 EditorSelector -->
+            <ContentControl Grid.Row="1"
+                            Content="{Binding .}"
+                            ContentTemplate="{StaticResource EditorSelector}" />
+
+            <!-- 默认值提示 -->
+            <TextBlock Grid.Row="2"
+                       Text="{Binding DefaultValue, StringFormat='Default: {0}'}"
+                       FontSize="10"
+                       Foreground="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                       IsVisible="{Binding DefaultValue, Converter={StaticResource NullToVisConv}}" />
+        </Grid>
+    </Border>
+</UserControl>

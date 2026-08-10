@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:avaloniaedit="https://github.com/avaloniaui/avaloniaedit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:MinePackEditor.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:utils="clr-namespace:MinePackEditor.Utils"
+             xmlns:models="using:MinePackEditor.Models"
+             xmlns:vm="using:MinePackEditor.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MinePackEditor.Views.TextEditorView">
+
+    <Grid>
+        <avaloniaedit:TextEditor x:Name="Editor" ShowLineNumbers="True"
+                                 FontFamily="JetBrains Mono"
+                                 FontSize="13" Background="{DynamicResource BgFront1Brush}"
+                                 Text="Debug Text: If you see this text, it means you may meet some problems" />
+    </Grid>
+</UserControl>

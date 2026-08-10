@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:settings="using:MinePackEditor.Models.Settings">
+    <DataTemplate x:Key="ToggleSwitchEditor" DataType="settings:SettingItem">
+        <ToggleSwitch IsChecked="{Binding CurrentValue, Mode=TwoWay}" />
+    </DataTemplate>
+</ResourceDictionary>

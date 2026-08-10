@@ -1,0 +1,101 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:MinePackEditor.Converters"
+             xmlns:controls="clr-namespace:MinePackEditor"
+             xmlns:styly="using:FluentAvalonia.Styling"
+             xmlns:avaloniaedit="https://github.com/avaloniaui/avaloniaedit"
+             xmlns:models="clr-namespace:MinePackEditor.Models"
+             xmlns:selectors="using:MinePackEditor.Selectors"
+             xmlns:vm="clr-namespace:MinePackEditor.ViewModels"
+             xmlns:views="clr-namespace:MinePackEditor.Views"
+             x:Class="MinePackEditor.App"
+             xmlns:local="using:MinePackEditor"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <styly:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+    </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <converters:FileIconMultiConverter x:Key="FileIconMultiConverter"/>
+            <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+            <converters:ConfigLocConverter x:Key="ConfigLocConverter" />
+
+            <converters:EditorTypeToBoolConverter x:Key="EditorTypeToBoolConv" />
+            <converters:NullToVisibilityConverter x:Key="NullToVisConv" />
+            <converters:CountToBoolConverter x:Key="CountToBoolConv" />
+
+            <selectors:FileViewTemplateSelector x:Key="FileEditorSelector" />
+
+                <!-- 引入各编辑器模板（全局可用） -->
+              <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/ToggleSwitchEditor.axaml" />
+                <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/SliderEditor.axaml" />
+                <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/NumericSpinnerEditor.axaml" />
+                <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/ComboBoxEditor.axaml" />
+                <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/TextBoxEditor.axaml" />
+              </ResourceDictionary.MergedDictionaries>
+
+              <!-- 全局编辑器模板选择器 -->
+              <selectors:SettingEditorTemplateSelector x:Key="EditorSelector">
+                <selectors:SettingEditorTemplateSelector.ToggleSwitchTemplate>
+                  <StaticResource ResourceKey="ToggleSwitchEditor" />
+                </selectors:SettingEditorTemplateSelector.ToggleSwitchTemplate>
+                <selectors:SettingEditorTemplateSelector.SliderTemplate>
+                  <StaticResource ResourceKey="SliderEditor" />
+                </selectors:SettingEditorTemplateSelector.SliderTemplate>
+                <selectors:SettingEditorTemplateSelector.NumericSpinnerTemplate>
+                  <StaticResource ResourceKey="NumericSpinnerEditor" />
+                </selectors:SettingEditorTemplateSelector.NumericSpinnerTemplate>
+                <selectors:SettingEditorTemplateSelector.ComboBoxTemplate>
+                  <StaticResource ResourceKey="ComboBoxEditor" />
+                </selectors:SettingEditorTemplateSelector.ComboBoxTemplate>
+                <selectors:SettingEditorTemplateSelector.TextBoxTemplate>
+                  <StaticResource ResourceKey="TextBoxEditor" />
+                </selectors:SettingEditorTemplateSelector.TextBoxTemplate>
+                <selectors:SettingEditorTemplateSelector.FallbackTemplate>
+                  <StaticResource ResourceKey="TextBoxEditor" />
+                </selectors:SettingEditorTemplateSelector.FallbackTemplate>
+              </selectors:SettingEditorTemplateSelector>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key='BackgroundBrush'>#F2F2F2</SolidColorBrush>
+                    <SolidColorBrush x:Key='BgFront1Brush'>White</SolidColorBrush>
+
+                    <SolidColorBrush x:Key='TitleBackgroundBrush'>#e6e6e6</SolidColorBrush>
+
+                    <SolidColorBrush x:Key='DefaultBorderBrush'>#c8c8c8</SolidColorBrush>
+
+                      <SolidColorBrush x:Key='ToolbarBgBrush'>#fafafa</SolidColorBrush>
+
+                      <SolidColorBrush x:Key='TipbarBgBrush'>Gray</SolidColorBrush>
+                      <SolidColorBrush x:Key='DefaultTextFgBrush'>Black</SolidColorBrush>
+                      <SolidColorBrush x:Key='NDefaultTextFgBrush'>White</SolidColorBrush>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Dark">
+                      <SolidColorBrush x:Key='BackgroundBrush'>#3d3d3d</SolidColorBrush>
+                    <SolidColorBrush x:Key='BgFront1Brush'>#e6e6e6</SolidColorBrush>
+
+                      <SolidColorBrush x:Key='TitleBackgroundBrush'>#7d7d7d</SolidColorBrush>
+
+                      <SolidColorBrush x:Key='DefaultBorderBrush'>#9b9b9b</SolidColorBrush>
+
+                      <SolidColorBrush x:Key='ToolbarBgBrush'>#424242</SolidColorBrush>
+
+                      <SolidColorBrush x:Key='TipbarBgBrush'>#e8e8e8</SolidColorBrush>
+                      <SolidColorBrush x:Key='DefaultTextFgBrush'>White</SolidColorBrush>
+                      <SolidColorBrush x:Key='NDefaultTextFgBrush'>Black</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,283 @@
+THIRD-PARTY NOTICES AND LEGAL DECLARATIONS
+第三方组件声明及法律声明
+
+==============================================================================
+软件信息 / Software Information
+==============================================================================
+
+[软件名称]    Minecraft Datapack Editor
+[软件用途]    用于创建、编辑和管理 Minecraft 数据包（Datapack）的第三方工具
+[开发说明]    本软件在开发过程中使用了 AI 辅助编程工具，所有代码均经过人工审查和修改。
+
+==============================================================================
+一、商标与知识产权声明 / Trademark & IP Declarations
+==============================================================================
+
+1.1 Minecraft 商标声明
+
+    "Minecraft" 是 Mojang Studios 的注册商标。
+    本软件与 Mojang Studios、Microsoft Corporation、Xbox Game Studios 
+    及其关联公司无任何关联、授权、认可或赞助关系。
+
+    本软件是一款独立的第三方工具，旨在帮助 Minecraft 玩家和创作者
+    更方便地编辑数据包。使用本软件仍需用户遵守 Minecraft 最终用户许可协议
+    （Minecraft End User License Agreement, EULA）。
+
+    本软件不包含任何 Minecraft 原始游戏资源、代码或资产。
+    用户需自行拥有正版的 Minecraft 游戏才能使用本软件创建的数据包。
+
+1.2 一般免责声明
+
+    本软件按"原样"提供，不提供任何明示或暗示的担保，包括但不限于
+    对适销性、特定用途适用性和非侵权性的担保。作者不对因使用本软件
+    而产生的任何直接或间接损失承担责任。
+
+==============================================================================
+二、第三方开源组件 / Third-Party Open-Source Components
+==============================================================================
+
+本软件使用了以下开源组件，感谢所有贡献者的辛勤工作。
+
+------------------------------------------------------------------------------
+2.1 MIT License 组件
+------------------------------------------------------------------------------
+
+以下组件均遵循 MIT 许可证（The MIT License）：
+
+    • Avalonia
+      Copyright (c) Avalonia UI Team
+      许可证: MIT
+      源码: https://github.com/AvaloniaUI/Avalonia
+      用途: 跨平台 UI 框架
+
+    • Avalonia.Desktop
+      Copyright (c) Avalonia UI Team
+      许可证: MIT
+      源码: https://github.com/AvaloniaUI/Avalonia
+      用途: 桌面平台支持
+
+    • Avalonia.Fonts.Inter
+      Copyright (c) Avalonia UI Team
+      许可证: MIT
+      源码: https://github.com/AvaloniaUI/Avalonia
+      用途: Inter 字体集成
+
+    • Avalonia.Themes.Fluent
+      Copyright (c) Avalonia UI Team
+      许可证: MIT
+      源码: https://github.com/AvaloniaUI/Avalonia
+      用途: Fluent 设计主题
+
+    • Avalonia.AvaloniaEdit
+      Copyright (c) Avalonia UI Team
+      许可证: MIT
+      源码: https://github.com/AvaloniaUI/AvaloniaEdit
+      用途: 代码编辑器控件
+
+    • AvaloniaEdit.TextMate
+      Copyright (c) Avalonia UI Team
+      许可证: MIT
+      源码: https://github.com/AvaloniaUI/AvaloniaEdit
+      用途: TextMate 语法高亮支持
+
+    • CommunityToolkit.Mvvm
+      Copyright (c) Microsoft Corporation
+      许可证: MIT
+      源码: https://github.com/CommunityToolkit/dotnet
+      用途: MVVM 工具包
+
+    • FluentAvaloniaUI
+      Copyright (c) amwx / FluentAvalonia Contributors
+      许可证: MIT
+      源码: https://github.com/amwx/FluentAvalonia
+      用途: Fluent Design 控件库
+
+    • Svg.Controls.Skia.Avalonia (Svg.Skia)
+      Copyright (c) Wiesław Šoltés
+      许可证: MIT
+      源码: https://github.com/wieslawsoltes/Svg.Skia
+      用途: SVG 渲染支持
+      注: 部分代码改编自 vvvv/SVG 项目。
+
+    • TextMateSharp
+      Copyright (c) Daniel Penalba
+      许可证: MIT
+      源码: https://github.com/danipen/TextMateSharp
+      用途: 语法高亮引擎
+
+    • TextMateSharp.Grammars (语法文件)
+      各语法文件版权归属其原始作者
+      主要来源: microsoft/vscode-textmate 及相关语法仓库
+      许可证: 主要为 MIT
+      用途: 各编程语言的语法定义文件
+
+    • AvaloniaUI.DiagnosticsSupport
+      Copyright (c) Avalonia UI Team
+      许可证: 集成支持包，免费使用，属 Avalonia 开发者工具生态的一部分
+      说明: https://www.nuget.org/packages/AvaloniaUI.DiagnosticsSupport
+      用途: 开发者工具连接支持
+      注: 本包为 Avalonia 开发者工具的集成桥接包，可在项目中自由引用。
+          实际使用开发者工具功能可能需要 Avalonia Portal 账户。
+
+------------------------------------------------------------------------------
+2.2 Apache License 2.0 组件
+------------------------------------------------------------------------------
+
+    • IconPark 图标库
+      Copyright (c) 字节跳动 / 北京巨量引擎网络技术有限公司
+      许可证: Apache License 2.0
+      来源: https://iconpark.oceanengine.com
+      用途: 用户界面图标
+      说明: IconPark 图标来自字节跳动官方图标库，遵循 Apache 2.0 协议开源。
+            图标可在商业项目中免费使用，需保留版权声明。
+
+------------------------------------------------------------------------------
+2.3 SIL Open Font License 1.1 字体
+------------------------------------------------------------------------------
+
+以下字体均遵循 SIL 开放字体许可证 1.1（SIL Open Font License 1.1）：
+
+    • MiSans
+      Copyright (c) 小米集团
+      许可证: SIL Open Font License 1.1
+      来源: https://hyperos.mi.com/font/
+      用途: 界面中文字体
+      说明: 全球免费商用，可嵌入软件分发。
+            字体文件本身不得单独销售。
+
+    • JetBrains Mono
+      Copyright (c) JetBrains s.r.o.
+      许可证: SIL Open Font License 1.1
+      来源: https://www.jetbrains.com/lp/mono/
+      用途: 代码等宽字体
+      说明: 可自由用于个人和商业项目，可嵌入软件。
+            字体文件本身不得单独销售。
+
+    • Inter
+      Copyright (c) 2016-2020 Rasmus Andersson
+      许可证: SIL Open Font License 1.1
+      来源: https://rsms.me/inter/
+      用途: 界面西文字体
+      说明: Google Fonts 收录字体，可自由用于个人和商业项目，可嵌入软件。
+            字体文件本身不得单独销售。
+
+==============================================================================
+三、许可证全文 / Full License Texts
+==============================================================================
+
+以下为本软件所涉及的各许可证完整文本。
+
+------------------------------------------------------------------------------
+3.1 MIT License
+------------------------------------------------------------------------------
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+------------------------------------------------------------------------------
+3.2 Apache License 2.0 (节选 / Excerpt)
+------------------------------------------------------------------------------
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    完整许可证文本请访问: https://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------------
+3.3 SIL Open Font License 1.1
+------------------------------------------------------------------------------
+
+    Copyright (c) [各字体版权方]
+    This Font Software is licensed under the SIL Open Font License, Version 1.1.
+    This license is available with a FAQ at: https://scripts.sil.org/OFL
+
+    -----------------------------------------------------------
+    SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+    -----------------------------------------------------------
+
+    PREAMBLE
+    The goals of the Open Font License (OFL) are to stimulate worldwide
+    development of collaborative font projects, to support the font creation
+    efforts of academic and linguistic communities, and to provide a free and
+    open framework in which fonts may be shared and improved in partnership
+    with others.
+
+    The OFL allows the licensed fonts to be used, studied, modified and
+    redistributed freely as long as they are not sold by themselves. The
+    fonts, including any derivative works, can be bundled, embedded,
+    redistributed and/or sold with any software provided that any reserved
+    names are not used by derivative works. The fonts and derivatives,
+    however, cannot be released under any other type of license. The
+    requirement for fonts to remain under this license does not apply
+    to any document created using the fonts or their derivatives.
+
+    [完整文本请访问 https://scripts.sil.org/OFL]
+
+==============================================================================
+四、开发工具与平台声明 / Development Tools & Platforms
+==============================================================================
+
+    • Visual Studio
+      开发商: Microsoft Corporation
+      说明: 本软件使用 Visual Studio 作为开发环境。Visual Studio 是 Microsoft
+            的专有软件，本软件的发布不附带 Visual Studio 的任何组件。
+
+    • IconPark 平台 (iconpark.oceanengine.com)
+      运营商: 字节跳动 / 巨量引擎
+      说明: 本软件使用的图标通过 IconPark 平台获取，遵循平台服务条款及
+            Apache License 2.0 开源协议。
+
+==============================================================================
+五、AI 辅助开发声明 / AI-Assisted Development Disclosure
+==============================================================================
+
+    本软件在开发过程中使用了人工智能（AI）辅助编程工具。
+    所有由 AI 生成的代码和建议均经过开发者的人工审查、修改和验证。
+    开发者对最终代码的质量、安全性和合法性负全部责任。
+
+==============================================================================
+六、用户义务 / User Obligations
+==============================================================================
+
+    使用本软件即表示您同意：
+
+    1. 遵守 Minecraft 最终用户许可协议（EULA）及商业使用指南。
+    2. 不将本软件用于侵犯 Mojang Studios 或 Microsoft 知识产权的活动。
+    3. 理解本软件为独立第三方工具，不提供 Minecraft 游戏本体或破解功能。
+    4. 数据包内容（命令、函数、结构等）的知识产权归 respective 创作者所有。
+
+==============================================================================
+七、更新记录 / Update History
+==============================================================================
+
+    [日期]    初始版本，整合所有第三方组件声明
+
+==============================================================================
+
+如有任何关于本声明的疑问，请联系软件开发者。
+
+本声明文件最后更新日期: 2026.8.10

@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:settings="using:MinePackEditor.Models.Settings">
+    <Design.PreviewWith>
+        <NumericUpDown Value="0.1"
+                       Minimum="0"
+                       Maximum="1"
+                       Increment="0.1" />
+    </Design.PreviewWith>
+    
+    <DataTemplate x:Key="NumericSpinnerEditor" DataType="settings:SettingItem">
+        <NumericUpDown Value="{Binding DoubleValue, Mode=TwoWay}"
+                       Minimum="{Binding MinValue}"
+                       Maximum="{Binding MaxValue}"
+                       Increment="{Binding StepValue}" />
+    </DataTemplate>
+</ResourceDictionary>
