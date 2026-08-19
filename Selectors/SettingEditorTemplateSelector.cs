@@ -19,6 +19,7 @@ namespace MinePackEditor.Selectors
         public IDataTemplate? ComboBoxTemplate { get; set; }
         public IDataTemplate? TextBoxTemplate { get; set; }
         public IDataTemplate? FallbackTemplate { get; set; }
+        public IDataTemplate? ListEditorTemplate { get; set; }
 
         public Control? Build(object? param)
         {
@@ -42,6 +43,7 @@ namespace MinePackEditor.Selectors
                 SettingEditorType.NumericSpinner => NumericSpinnerTemplate,
                 SettingEditorType.ComboBox => ComboBoxTemplate,
                 SettingEditorType.TextBox => TextBoxTemplate,
+                SettingEditorType.ListEditor => ListEditorTemplate,
                 _ => FallbackTemplate
             };
         }

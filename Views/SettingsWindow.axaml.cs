@@ -10,9 +10,6 @@ namespace MinePackEditor.Views
         public SettingsWindow()
         {
             InitializeComponent();
-            var vm = new SettingsWindowViewModel();
-            vm.RequestClose += (_, _) => Close();
-            DataContext = vm;
         }
 
         private void Darg(object? sender, Avalonia.Input.PointerPressedEventArgs e)

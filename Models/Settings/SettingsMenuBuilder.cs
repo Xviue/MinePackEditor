@@ -87,7 +87,8 @@ namespace MinePackEditor.Models.Settings
                 DescriptionKey = attr.DescriptionKey ?? $"Config:{attr.Id}:Desc",
                 EditorType = attr.EditorType,
                 ValueType = prop.PropertyType,
-                DefaultValue = attr.DefaultValue
+                DefaultValue = attr.DefaultValue,
+                AllowListEdit = attr.AllowListEdit
             };
 
             item.Constraint = new SettingConstraint
@@ -97,7 +98,9 @@ namespace MinePackEditor.Models.Settings
                 Step = attr.Step,
                 Options = attr.OptionsKey != null && _optionProviders.TryGetValue(attr.OptionsKey, out var opts)
                     ? opts
-                    : null
+                    : null,
+                DisplayMemberPath = attr.DisplayMemberPath,
+                AllowListEdit = attr.AllowListEdit
             };
 
             item.Attach(settings, prop);

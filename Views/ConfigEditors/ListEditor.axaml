@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:settings="using:MinePackEditor.Models.Settings"
+                    xmlns:uiloc="using:MinePackEditor.Localization.UI"
+                    xmlns:converter="clr-namespace:MinePackEditor.Converters">
+
+    <DataTemplate x:Key="ListEditor" DataType="settings:SettingItem">
+        <Grid RowDefinitions="*,Auto,Auto">
+
+            <!-- 列表区域：绑定 ListItems（IList 强类型） -->
+            <ListBox ItemsSource="{Binding ListItems}"
+                     SelectedItem="{Binding SelectedListItem, Mode=TwoWay}"
+                     BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                     BorderThickness="1"
+                     CornerRadius="4">
+                <ListBox.ItemTemplate>
+                    <!-- 显式指定 DataType，避免类型推断失败 -->
+                    <DataTemplate x:DataType="x:Object">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <!-- 显示名称：通过 Converter 反射获取 DisplayMemberPath 指定属性 -->
+                            <TextBlock VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource ListDisplayConv}">
+                                        <Binding Path="." />
+                                        <Binding Path="$parent[ListBox].((settings:SettingItem)DataContext).Constraint.DisplayMemberPath" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                            <!-- 调试显示：类型名 -->
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding ., Converter={StaticResource TypeNameConv}}"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                       VerticalAlignment="Center"
+                                       Margin="8,0,0,0" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- 操作栏：根据 AllowListEdit 控制是否显示 -->
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        Spacing="10"
+                        Margin="0,8,0,0"
+                        IsVisible="{Binding Constraint.AllowListEdit}">
+                <Button Content="{uiloc:Loc Key=Add}" Command="{Binding AddListItemCommand}" />
+                <Button Content="{uiloc:Loc Key=Remove}" Command="{Binding RemoveListItemCommand}"
+                        IsEnabled="{Binding SelectedListItem, Converter={StaticResource NullToVisConv}}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

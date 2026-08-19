@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="Apply" xml:space="preserve">
     <value>Apply</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value>Default: </value>
   </data>
   <data name="MainTitle" xml:space="preserve">
     <value>Minecraft Datapack Editor</value>
@@ -132,6 +138,9 @@
   <data name="Menu.File.Save-all" xml:space="preserve">
     <value>Save All</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="ResetAll" xml:space="preserve">
     <value>Reset All</value>
   </data>
@@ -140,6 +149,12 @@
   </data>
   <data name="SearchSettingsPlaceholder" xml:space="preserve">
     <value>Search ...</value>
+  </data>
+  <data name="Setting-Modified" xml:space="preserve">
+    <value>(*Modified)</value>
+  </data>
+  <data name="Setting-OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
     <value>Settings</value>

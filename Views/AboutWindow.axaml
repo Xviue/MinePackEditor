@@ -2,9 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:usercontrols="using:MinePackEditor.Controls.UserControls"
         mc:Ignorable="d" Width="600" Height="550"
         x:Class="MinePackEditor.Views.AboutWindow"
         Title="AboutWindow"
+        Icon="/Assets/icon.ico"
         CanResize="False"
         WindowStartupLocation="CenterOwner"
         WindowDecorations="BorderOnly"
@@ -13,41 +15,41 @@
     <Border CornerRadius="4">
         <Grid RowDefinitions="Auto,Auto,*" Margin="5">
             <TextBlock Grid.Row="0" Text="关于 Minecraft Datapack Editor" FontWeight="Bold" FontSize="20" />
-            <Button Width="30" Height="30" 
-                        Background="Transparent" BorderThickness="0" Click="CloseButton_Click"
-                        HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Canvas Width="10" Height="10" Background="Transparent">
-                        <Line StartPoint="1,1.5" EndPoint="9,9.5" 
-                              Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                        <Line StartPoint="9,1.5" EndPoint="1,9.5" 
-                              Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                    </Canvas>
-                </Button>
-        <Grid Grid.Row="1" Margin="4,4,0,0">
-            <StackPanel Spacing="4">
-                <TextBlock Text=" 2026.8.10" FontSize="9" />
-                <TextBlock Text="名称:                   Minecraft Datapack Editor" FontSize="12" />
-                <TextBlock Text="                                   (包名 : MinePackEditor)" FontSize="10" />
-                <TextBlock Text="版本:                    内部测试版" FontSize="12" />
-                <TextBlock Text="作者:                    Xviue ( https://github.com/Xviue / Fansyri@outlook.com)" FontSize="12" />
-                <TextBlock Text="开源仓库:             https://github.com/Xviue（...）" FontSize="12" />
-                <TextBlock Text="开源协议:             MIT 许可 ( https://mit-license.org/ )" FontSize="12" />
-                <Border>
-                    <TextBox Height="160"
-                            AcceptsReturn="True"
-                            TextWrapping="Wrap" FontSize="11"
-                            IsReadOnly="True" x:Name="LicenseBox" />
-                </Border>
-            </StackPanel>
+            <Button Width="30" Height="30"
+                    Background="Transparent" BorderThickness="0" Click="CloseButton_Click"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Canvas Width="10" Height="10" Background="Transparent">
+                    <Line StartPoint="1,1.5" EndPoint="9,9.5"
+                          Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
+                    <Line StartPoint="9,1.5" EndPoint="1,9.5"
+                          Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
+                </Canvas>
+            </Button>
+            <Grid Grid.Row="1" Margin="4,4,0,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text=" 2026.8.10" FontSize="9" />
+                    <TextBlock Text="名称:                   Minecraft Datapack Editor" FontSize="12" />
+                    <TextBlock Text="                                   (包名 : MinePackEditor)" FontSize="10" />
+                    <TextBlock Text="版本:                    内部测试版" FontSize="12" />
+                    <TextBlock Text="作者:                    Xviue ( https://github.com/Xviue / Fansyri@outlook.com)" FontSize="12" />
+                    <TextBlock Text="开源仓库:             https://github.com/Xviue（...）" FontSize="12" />
+                    <TextBlock Text="开源协议:             MIT 许可 ( https://mit-license.org/ )" FontSize="12" />
+                    <Border>
+                        <TextBox Height="160"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap" FontSize="11"
+                                 IsReadOnly="True" x:Name="LicenseBox" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2" Margin="4,4,0,0">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="第三方开源组件: 本软件使用了以下开源组件，感谢所有贡献者的辛勤工作。" FontSize="9" />
+                    <TextBox AcceptsReturn="True" Height="190"
+                             TextWrapping="Wrap" FontSize="11"
+                             IsReadOnly="True" x:Name="SupportsBox" />
+                </StackPanel>
+            </Grid>
         </Grid>
-        <Grid Grid.Row="2" Margin="4,4,0,0">
-            <StackPanel Spacing="4">
-                <TextBlock Text="第三方开源组件: 本软件使用了以下开源组件，感谢所有贡献者的辛勤工作。" FontSize="9" />
-                <TextBox AcceptsReturn="True" Height="190"
-                         TextWrapping="Wrap" FontSize="11"
-                         IsReadOnly="True" x:Name="SupportsBox" />
-            </StackPanel>
-        </Grid>
-    </Grid>
     </Border>
 </Window>

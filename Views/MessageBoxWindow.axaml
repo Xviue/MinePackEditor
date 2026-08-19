@@ -15,7 +15,7 @@
         WindowDecorations="BorderOnly"
         RequestedThemeVariant="Default"
         ExtendClientAreaToDecorationsHint="True"
-        Icon="">
+        Icon="/Assets/icon.ico">
      <Border Padding="24" Background="{DynamicResource BackgroundBrush}" 
              VerticalAlignment="Center" PointerPressed="Border_PointerPressed">
         <StackPanel Spacing="16">

@@ -3,6 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="using:MinePackEditor.Models"
+        xmlns:templatedcontrols="using:MinePackEditor.Controls.TemplatedControls"
+        xmlns:usercontrols="using:MinePackEditor.Controls.UserControls"
         xmlns:vm="using:MinePackEditor.ViewModels"
         mc:Ignorable="d" Width="400" Height="450"
         x:Class="MinePackEditor.Views.SaveAllDialogWindow"
@@ -12,12 +14,13 @@
         WindowDecorations="BorderOnly"
         RequestedThemeVariant="Default"
         ExtendClientAreaToDecorationsHint="True"
-        Icon="" x:DataType="vm:SaveAllViewModel" 
+        Icon="/Assets/icon.ico"
+        x:DataType="vm:SaveAllViewModel"
         Background="{DynamicResource BgFront1Brush}">
     <Design.DataContext>
         <vm:SaveAllViewModel />
     </Design.DataContext>
-    
+
     <Window.Resources>
         <ControlTheme x:Key="FileItem" TargetType="DockPanel">
             <Setter Property="Background" Value="Transparent" />
@@ -32,44 +35,42 @@
         </ControlTheme>
     </Window.Resources>
 
-    <Border Margin="10" Background="{DynamicResource BgFront1Brush}"  PointerPressed="Border_PointerPressed">
+    <Border Margin="10" Background="{DynamicResource BgFront1Brush}"
+            PointerPressed="Border_PointerPressed">
+
         <StackPanel Orientation="Vertical" Spacing="10">
-            <Panel>
-                <TextBlock Text="是否保存对以下文件的更改？" 
-                           FontWeight="Bold" FontSize="17" />
-                <Button Width="30" Height="30" 
-                        Background="Transparent" BorderThickness="0"
-                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Click="CancelBtn_OnClick">
-                    <Canvas Width="10" Height="10" Background="Transparent">
-                        <Line StartPoint="1,1.5" EndPoint="9,9.5" 
-                              Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                        <Line StartPoint="9,1.5" EndPoint="1,9.5" 
-                              Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                    </Canvas>
-                </Button>
-            </Panel>
-            
-            <Border BorderBrush="{DynamicResource DefaultBorderBrush}" 
+            <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Text="是否保存对以下所有文件的更改？"
+                           FontWeight="Bold" FontSize="17" HorizontalAlignment="Left" />
+                <templatedcontrols:ChromeButton IconData="{StaticResource ChromeIconClose}"
+                                           Width="30" Height="30"
+                                           IconSize="12"
+                                           Grid.Column="1"
+                                           IconThickness="1.6"
+                                           HorizontalAlignment="Right"
+                                           Click="CancelBtn_OnClick" />
+            </Grid>
+
+            <Border BorderBrush="{DynamicResource DefaultBorderBrush}"
                     Background="{DynamicResource BgFront1Brush}"
                     BorderThickness="1" CornerRadius="4">
                 <Border.ContextFlyout>
                     <MenuFlyout>
-                            <MenuItem Header="纳入全部" Click="CtxIncludeAll_OnClick" />
-                            <MenuItem Header="排除全部" Click="CtxExcludeAll_OnClick" />
+                        <MenuItem Header="纳入全部" Click="CtxIncludeAll_OnClick" />
+                        <MenuItem Header="排除全部" Click="CtxExcludeAll_OnClick" />
                     </MenuFlyout>
                 </Border.ContextFlyout>
 
                 <ItemsControl ItemsSource="{Binding Files}" Height="350">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:SaveFileItem">
-                            <Border Margin="3,2,3,0" 
-                                    Background="{DynamicResource BgFront1Brush}" 
+                            <Border Margin="3,2,3,0"
+                                    Background="{DynamicResource BgFront1Brush}"
                                     CornerRadius="3" ClipToBounds="True"
                                     Opacity="{Binding IsIncluded, Converter={StaticResource BoolToOpacityConverter}}">
                                 <Border.ContextFlyout>
                                     <MenuFlyout Placement="Bottom">
-                                        <MenuItem Header="纳入" Click="CtxInclude_OnClick" 
+                                        <MenuItem Header="纳入" Click="CtxInclude_OnClick"
                                                   IsEnabled="{Binding !IsIncluded}" />
                                         <MenuItem Header="排除" Click="CtxExclude_OnClick"
                                                   IsEnabled="{Binding IsIncluded}"/>
@@ -81,7 +82,7 @@
 
                                 <DockPanel Theme="{StaticResource FileItem}">
                                     <TextBlock Margin="6,4" VerticalAlignment="Center"
-                                               Text="{Binding Document.FileName}" />
+                                               Text="{Binding Document.FileName}" FontWeight="Normal" />
                                 </DockPanel>
                             </Border>
                         </DataTemplate>
@@ -93,10 +94,10 @@
                         HorizontalAlignment="Center" Spacing="10">
                 <Button x:Name="YesBtn" Content="保存" Click="YesBtn_OnClick" />
                 <Button x:Name="NoBtn" Content="不保存" Click="NoBtn_OnClick" />
-                <Button x:Name="CancelBtn" Content="取消" IsCancel="True" 
+                <Button x:Name="CancelBtn" Content="取消" IsCancel="True"
                         Click="CancelBtn_OnClick" />
             </StackPanel>
         </StackPanel>
     </Border>
-    
+
 </Window>

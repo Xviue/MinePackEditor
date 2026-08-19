@@ -11,64 +11,78 @@
              x:Class="MinePackEditor.App"
              xmlns:local="using:MinePackEditor"
              RequestedThemeVariant="Default">
-             <!-- 可以整这个主题了！ 
-                 在遇到对于Border的Setter的Value设置为{DynamicResource DefaultBackgroundBrush}导致缓动消失时，可以用Border套Border-->
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- 可以整这个主题了！
+    在遇到对于Border的Setter的Value设置为{DynamicResource DefaultBackgroundBrush}导致缓动消失时，可以用Border套Border-->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
-        <Style Selector="TextElement">
-            <Setter Property="FontFamily" Value="avares://MinePackEditor/Assets/Fonts/MiSans-Normal.ttf#MiSans" />
+        <Style Selector="Window">
+            <Setter Property="FontFamily" Value="{DynamicResource MiSans}"/>
+            <Setter Property="FontWeight" Value="Regular" />
         </Style>
         <styly:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://MinePackEditor/Themes/ChromeButtonTheme.axaml" />
+        <StyleInclude Source="avares://MinePackEditor/Themes/SlideTipTheme.axaml" />
+        <StyleInclude Source="avares://MinePackEditor/Themes/SlideTipBarTheme.axaml" />
     </Application.Styles>
 
     <Application.Resources>
         <ResourceDictionary>
+            <FontFamily x:Key="MiSans">avares://MinePackEditor/Assets/Fonts/MiSans#MiSans</FontFamily>
+
             <converters:FileIconMultiConverter x:Key="FileIconMultiConverter"/>
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
             <converters:ConfigLocConverter x:Key="ConfigLocConverter" />
 
             <converters:EditorTypeToBoolConverter x:Key="EditorTypeToBoolConv" />
+            <converters:DefaultValueStringConverter x:Key="DefaultValueStringConv" />
             <converters:NullToVisibilityConverter x:Key="NullToVisConv" />
             <converters:CountToBoolConverter x:Key="CountToBoolConv" />
+            <!-- 新增全局转换器 -->
+            <converters:ListDisplayConverter x:Key="ListDisplayConv" />
+            <converters:TypeNameConverter x:Key="TypeNameConv" />
 
             <selectors:FileViewTemplateSelector x:Key="FileEditorSelector" />
 
-                <!-- 引入各编辑器模板（全局可用） -->
-              <ResourceDictionary.MergedDictionaries>
+            <!-- 引入各编辑器模板，一共有三处要添加（此处，下处选择器和Editors.axaml设计） -->
+            <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/ToggleSwitchEditor.axaml" />
                 <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/SliderEditor.axaml" />
                 <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/NumericSpinnerEditor.axaml" />
                 <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/ComboBoxEditor.axaml" />
                 <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/TextBoxEditor.axaml" />
-              </ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://MinePackEditor/Views/ConfigEditors/ListEditor.axaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-              <!-- 全局编辑器模板选择器 -->
-              <selectors:SettingEditorTemplateSelector x:Key="EditorSelector">
+            <!-- 全局编辑器模板选择器,这里的x:Key为ConfigEditors中.axaml编辑器的Key -->
+            <selectors:SettingEditorTemplateSelector x:Key="EditorSelector">
                 <selectors:SettingEditorTemplateSelector.ToggleSwitchTemplate>
-                  <StaticResource ResourceKey="ToggleSwitchEditor" />
+                    <StaticResource ResourceKey="ToggleSwitchEditor" />
                 </selectors:SettingEditorTemplateSelector.ToggleSwitchTemplate>
                 <selectors:SettingEditorTemplateSelector.SliderTemplate>
-                  <StaticResource ResourceKey="SliderEditor" />
+                    <StaticResource ResourceKey="SliderEditor" />
                 </selectors:SettingEditorTemplateSelector.SliderTemplate>
                 <selectors:SettingEditorTemplateSelector.NumericSpinnerTemplate>
-                  <StaticResource ResourceKey="NumericSpinnerEditor" />
+                    <StaticResource ResourceKey="NumericSpinnerEditor" />
                 </selectors:SettingEditorTemplateSelector.NumericSpinnerTemplate>
                 <selectors:SettingEditorTemplateSelector.ComboBoxTemplate>
-                  <StaticResource ResourceKey="ComboBoxEditor" />
+                    <StaticResource ResourceKey="ComboBoxEditor" />
                 </selectors:SettingEditorTemplateSelector.ComboBoxTemplate>
                 <selectors:SettingEditorTemplateSelector.TextBoxTemplate>
-                  <StaticResource ResourceKey="TextBoxEditor" />
+                    <StaticResource ResourceKey="TextBoxEditor" />
                 </selectors:SettingEditorTemplateSelector.TextBoxTemplate>
+                <selectors:SettingEditorTemplateSelector.ListEditorTemplate>
+                    <StaticResource ResourceKey="ListEditor" />
+                </selectors:SettingEditorTemplateSelector.ListEditorTemplate>
                 <selectors:SettingEditorTemplateSelector.FallbackTemplate>
-                  <StaticResource ResourceKey="TextBoxEditor" />
+                    <StaticResource ResourceKey="TextBoxEditor" />
                 </selectors:SettingEditorTemplateSelector.FallbackTemplate>
-              </selectors:SettingEditorTemplateSelector>
+            </selectors:SettingEditorTemplateSelector>
 
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
@@ -81,28 +95,28 @@
 
                     <SolidColorBrush x:Key='DefaultBorderBrush'>#c8c8c8</SolidColorBrush>
 
-                      <SolidColorBrush x:Key='ToolbarBgBrush'>#fafafa</SolidColorBrush>
+                    <SolidColorBrush x:Key='ToolbarBgBrush'>#fafafa</SolidColorBrush>
 
-                      <SolidColorBrush x:Key='TipbarBgBrush'>Gray</SolidColorBrush>
-                      <SolidColorBrush x:Key='DefaultTextFgBrush'>Black</SolidColorBrush>
-                      <SolidColorBrush x:Key='NDefaultTextFgBrush'>White</SolidColorBrush>
+                    <SolidColorBrush x:Key='TipbarBgBrush'>Gray</SolidColorBrush>
+                    <SolidColorBrush x:Key='DefaultTextFgBrush'>Black</SolidColorBrush>
+                    <SolidColorBrush x:Key='NDefaultTextFgBrush'>White</SolidColorBrush>
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Dark">
-                      <SolidColorBrush x:Key='BackgroundBrush'>#3d3d3d</SolidColorBrush>
-                        <SolidColorBrush x:Key='BgInBrush'>#7d7d7d</SolidColorBrush>
+                    <SolidColorBrush x:Key='BackgroundBrush'>#3d3d3d</SolidColorBrush>
+                    <SolidColorBrush x:Key='BgInBrush'>#7d7d7d</SolidColorBrush>
 
                     <SolidColorBrush x:Key='BgFront1Brush'>#e6e6e6</SolidColorBrush>
 
-                      <SolidColorBrush x:Key='TitleBackgroundBrush'>#7d7d7d</SolidColorBrush>
+                    <SolidColorBrush x:Key='TitleBackgroundBrush'>#7d7d7d</SolidColorBrush>
 
-                      <SolidColorBrush x:Key='DefaultBorderBrush'>#9b9b9b</SolidColorBrush>
+                    <SolidColorBrush x:Key='DefaultBorderBrush'>#9b9b9b</SolidColorBrush>
 
-                      <SolidColorBrush x:Key='ToolbarBgBrush'>#424242</SolidColorBrush>
+                    <SolidColorBrush x:Key='ToolbarBgBrush'>#424242</SolidColorBrush>
 
-                      <SolidColorBrush x:Key='TipbarBgBrush'>#e8e8e8</SolidColorBrush>
-                      <SolidColorBrush x:Key='DefaultTextFgBrush'>White</SolidColorBrush>
-                      <SolidColorBrush x:Key='NDefaultTextFgBrush'>Black</SolidColorBrush>
+                    <SolidColorBrush x:Key='TipbarBgBrush'>#e8e8e8</SolidColorBrush>
+                    <SolidColorBrush x:Key='DefaultTextFgBrush'>White</SolidColorBrush>
+                    <SolidColorBrush x:Key='NDefaultTextFgBrush'>Black</SolidColorBrush>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

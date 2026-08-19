@@ -44,6 +44,15 @@ namespace MinePackEditor.Models.Settings
         public object? Step { get; set; }
 
         /// <summary>
+        /// 列表编辑器中，显示字符串的来源属性
+        /// </summary>
+        public string? DisplayMemberPath { get; set; }
+        /// <summary>
+        /// 列表编辑器中，是否允许增删改操作（false = 只读列表）
+        /// </summary>
+        public bool AllowListEdit { get; set; } = true;
+
+        /// <summary>
         /// 选项列表注册键，用于 ComboBox。
         /// 实际选项在 <see cref="SettingsMenuBuilder.RegisterOptions"/> 中提供。
         /// </summary>

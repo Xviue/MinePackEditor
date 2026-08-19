@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:selectors="using:MinePackEditor.Selectors"
              xmlns:settings="using:MinePackEditor.Models.Settings"
+             xmlns:uiloc="using:MinePackEditor.Localization.UI"
              mc:Ignorable="d"
              d:DesignWidth="800" d:DesignHeight="150"
              x:Class="MinePackEditor.Controls.UserControls.SettingItemControl"
@@ -22,46 +23,54 @@
         </ControlTheme>
     </UserControl.Resources>
 
-    <Border Background="{DynamicResource DefaultBackgroundBrush}">
+    <Border Background="{DynamicResource BackgroundBrush}">
         <Border Margin="0,6,0,0" Padding="14,12"
-            CornerRadius="8" Theme="{StaticResource MarkedBorder}"
-            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-            BorderThickness="1">
-        <Border.Transitions>
-            <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.1" />
-            </Transitions>
-        </Border.Transitions>
-        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="6">
+                CornerRadius="8" Theme="{StaticResource MarkedBorder}"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                BorderThickness="1">
+            <Border.Transitions>
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.1" />
+                </Transitions>
+            </Border.Transitions>
+            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="6">
 
-            <!-- 标题与描述 -->
-            <StackPanel Grid.Row="0">
-                <Panel >
-                    <TextBlock Text="{Binding DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
-                           FontSize="14" FontWeight="SemiBold"
-                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
-                    <TextBlock Text="{Binding Id}" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"
-                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
-                </Panel>
-                <TextBlock Text="{Binding DescriptionKey, Converter={StaticResource ConfigLocConverter}}"
-                           FontSize="11"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           TextWrapping="Wrap"
-                           IsVisible="{Binding DescriptionKey, Converter={StaticResource NullToVisConv}}" />
-            </StackPanel>
+                <!-- 标题与描述 -->
+                <StackPanel Grid.Row="0">
+                    <Panel >
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="{uiloc:Loc Key=Setting-Modified}"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}"
+                                       VerticalAlignment="Top"
+                                       IsVisible="{Binding IsModified}" />
+                            <TextBlock Text="{Binding DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
+                                       FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding Id}" FontSize="12" HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                    </Panel>
+                    <TextBlock Text="{Binding DescriptionKey, Converter={StaticResource ConfigLocConverter}}"
+                               FontSize="11"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               TextWrapping="Wrap"
+                               IsVisible="{Binding DescriptionKey, Converter={StaticResource NullToVisConv}}" />
+                </StackPanel>
 
-            <!-- 动态编辑器：引用全局的 EditorSelector -->
-            <ContentControl Grid.Row="1"
-                            Content="{Binding .}"
-                            ContentTemplate="{StaticResource EditorSelector}" />
+                <!-- 动态编辑器：引用全局的 EditorSelector -->
+                <ContentControl Grid.Row="1"
+                                Content="{Binding .}"
+                                ContentTemplate="{StaticResource EditorSelector}" />
 
-            <!-- 默认值提示 -->
-            <TextBlock Grid.Row="2"
-                       Text="{Binding DefaultValue, StringFormat='Default: {0}'}"
-                       FontSize="10"
-                       Foreground="{DynamicResource SystemControlForegroundBaseLowBrush}"
-                       IsVisible="{Binding DefaultValue, Converter={StaticResource NullToVisConv}}" />
-        </Grid>
-    </Border>
+                <!-- 默认值提示 -->
+                <TextBlock Grid.Row="2"
+                           Text="{Binding DefaultValue, Converter={StaticResource DefaultValueStringConv}}"
+                           FontSize="10"
+                           Foreground="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                           IsVisible="{Binding DefaultValue, Converter={StaticResource NullToVisConv}}" />
+            </Grid>
+        </Border>
     </Border>
 </UserControl>

@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:settings="using:MinePackEditor.Models.Settings"
+        xmlns:templatedcontrols="using:MinePackEditor.Controls.TemplatedControls"
         xmlns:uiloc="using:MinePackEditor.Localization.UI"
         xmlns:loc="using:MinePackEditor.Assets.Localization.Settings"
         xmlns:vm="using:MinePackEditor.ViewModels"
         xmlns:converter="clr-namespace:MinePackEditor.Converters"
         xmlns:selectors="clr-namespace:MinePackEditor.Selectors"
-        mc:Ignorable="d" Width="910" Height="660"
+        mc:Ignorable="d" Width="1000" Height="660"
         x:Class="MinePackEditor.Views.SettingsWindow"
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
@@ -17,6 +18,9 @@
         CanResize="False"
         RequestedThemeVariant="Light"
         Title="{uiloc:Loc Key=SettingsTitle}"
+        Icon="/Assets/icon.ico"
+        TextOptions.TextHintingMode="Strong"
+        TextOptions.TextRenderingMode="SubpixelAntialias"
         x:DataType="vm:SettingsWindowViewModel">
 
     <Design.DataContext>
@@ -75,112 +79,143 @@
     </Window.Resources>
 
     <Border>
-        <Grid ColumnDefinitions="260,*" RowDefinitions="Auto,*,Auto"  
-              Background="{DynamicResource DefaultBackgroundBrush}">
+        <Grid ColumnDefinitions="260,*" RowDefinitions="Auto,*,Auto"
+              Background="{DynamicResource BackgroundBrush}">
 
-        <!-- 顶部搜索栏 -->
-        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
-                PointerPressed="Darg"
-                Background="{DynamicResource DefaultBackgroundBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-                BorderThickness="0,0,0,1"
-                Padding="16,12">
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBox Grid.Column="0"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                         PlaceholderText="{uiloc:Loc Key=SearchSettingsPlaceholder}"
-                         Width="400"
-                         MaxWidth="800"
-                         HorizontalAlignment="Left" />
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                    <Button Content="{uiloc:Loc Key=ResetGroup}"
-                            Command="{Binding ResetCurrentGroupCommand}"
-                            IsEnabled="{Binding DisplayedItems.Count,
-                            Converter={x:Static converter:CountToBoolConverter.Instance}}" />
-                    <Button Content="{uiloc:Loc Key=ResetAll}"
-                            Command="{Binding ResetAllCommand}" />
-                </StackPanel>
-            </Grid>
-        </Border>
-
-        <!-- 左侧导航树 -->
-        <Border Grid.Column="0" Grid.Row="1"
-                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-                BorderThickness="0,0,1,0">
-            <TreeView ItemsSource="{Binding FilteredMenuTree}"
-                      SelectedItem="{Binding SelectedNode}"
-                      ItemTemplate="{StaticResource SettingsNodeTemplate}"
-                      Margin="0">
-                <TreeView.Styles>
-                    <Style Selector="TreeViewItem">
-                        <Setter Property="IsExpanded" Value="True" />
-                    </Style>
-                </TreeView.Styles>
-            </TreeView>
-        </Border>
-
-        <!-- 右侧内容区 -->
-        <ScrollViewer Grid.Column="1" Grid.Row="1"
-                      HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="0,0,20,10">
-            <Grid RowDefinitions="Auto,Auto,*">
-
-                <!-- 分组标题：搜索时隐藏，非搜索时显示 -->
-                <StackPanel Grid.Row="0" Margin="0,0,0,0"
-                            IsVisible="{Binding !IsSearchActive}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding SelectedNode.DisplayNameOverride}"
-                                   FontSize="22" FontWeight="Bold"
-                                   IsVisible="{Binding SelectedNode.DisplayNameOverride, Converter={StaticResource NullToVisConv}}" />
-                        <TextBlock Text="{Binding SelectedNode.DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
-                                   FontSize="22" FontWeight="Bold"
-                                   IsVisible="{Binding SelectedNode.DisplayNameOverride, Converter={StaticResource NullToVisConv}, ConverterParameter=Invert}" />
+            <!-- 顶部搜索栏 -->
+            <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                    PointerPressed="Darg"
+                    Background="{DynamicResource BackgroundBrush}"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="16,12">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <TextBlock Text="{uiloc:Loc Key=SettingsTitle}"
+                               VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,12,0"/>
+                    <TextBox Grid.Column="1"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             PlaceholderText="{uiloc:Loc Key=SearchSettingsPlaceholder}"
+                             Width="400"
+                             MaxWidth="800"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left" />
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                        <Button Content="{uiloc:Loc Key=ResetGroup}"
+                                Command="{Binding ResetCurrentGroupCommand}"
+                                IsEnabled="{Binding DisplayedItems.Count,
+                                Converter={x:Static converter:CountToBoolConverter.Instance}}" />
+                        <Button Content="{uiloc:Loc Key=ResetAll}"
+                                Command="{Binding ResetAllCommand}" />
                     </StackPanel>
-                    <TextBlock Text="{Binding SelectedNode.DescriptionKey, Converter={StaticResource ConfigLocConverter}}"
-                               FontSize="12"
+                </Grid>
+            </Border>
+
+            <!-- 左侧导航树 -->
+            <Border Grid.Column="0" Grid.Row="1"
+                    Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="0,0,1,0">
+                <TreeView ItemsSource="{Binding FilteredMenuTree}"
+                          SelectedItem="{Binding SelectedNode}"
+                          ItemTemplate="{StaticResource SettingsNodeTemplate}"
+                          Margin="0">
+                    <TreeView.Styles>
+                        <Style Selector="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="True" />
+                        </Style>
+                    </TreeView.Styles>
+                </TreeView>
+            </Border>
+
+            <!-- 右侧内容区 -->
+            <ScrollViewer Grid.Column="1" Grid.Row="1"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="0,0,20,10">
+                <Grid RowDefinitions="Auto,Auto,*">
+
+                    <!-- 分组标题：搜索时隐藏，非搜索时显示 -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,0"
+                                IsVisible="{Binding !IsSearchActive}" TextOptions.TextHintingMode="Light">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SelectedNode.DisplayNameOverride}"
+                                       FontSize="22" FontWeight="Bold"
+                                       IsVisible="{Binding SelectedNode.DisplayNameOverride, Converter={StaticResource NullToVisConv}}" />
+                            <TextBlock Text="{Binding SelectedNode.DisplayNameKey, Converter={StaticResource ConfigLocConverter}}"
+                                       FontSize="22" FontWeight="Bold"
+                                       IsVisible="{Binding SelectedNode.DisplayNameOverride, Converter={StaticResource NullToVisConv}, ConverterParameter=Invert}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding SelectedNode.DescriptionKey, Converter={StaticResource ConfigLocConverter}}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                   TextWrapping="Wrap"
+                                   IsVisible="{Binding SelectedNode.DescriptionKey, Converter={StaticResource NullToVisConv}}" />
+                    </StackPanel>
+
+                    <!-- 空状态提示（无内容时显示） -->
+                    <TextBlock Grid.Row="1"
+                               Text="{uiloc:Loc Key=SettingsEmptyGroup}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="14"
                                Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                               TextWrapping="Wrap"
-                               IsVisible="{Binding SelectedNode.DescriptionKey, Converter={StaticResource NullToVisConv}}" />
-                </StackPanel>
+                               IsVisible="{Binding !HasDisplayedItems}"
+                               Margin="0,40" />
 
-                <!-- 空状态提示（无内容时显示） -->
-                <TextBlock Grid.Row="1"
-                           Text="{uiloc:Loc Key=SettingsEmptyGroup}"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="14"
-                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-                           IsVisible="{Binding !HasDisplayedItems}"
-                           Margin="0,40" />
+                    <!-- 配置项列表：搜索时标题栏隐藏，本行 * 自动占满整个内容区 -->
+                    <ItemsControl Grid.Row="2"
+                                  ItemsSource="{Binding DisplayedItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="settings:SettingItem">
+                                <controls:SettingItemControl>
+                                    <controls:SettingItemControl.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuItem Header="重置配置项" 
+                                                      Command="{Binding $parent[Window].DataContext.ResetItemCommand}"
+                                                      CommandParameter="{Binding .}" />
+                                            <MenuItem Header="回退配置项" 
+                                                      Command="{Binding $parent[Window].DataContext.RevertItemCommand}"
+                                                      CommandParameter="{Binding .}" />
+                                        </MenuFlyout>
+                                    </controls:SettingItemControl.ContextFlyout>
+                                </controls:SettingItemControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </ScrollViewer>
 
-                <!-- 配置项列表：搜索时标题栏隐藏，本行 * 自动占满整个内容区 -->
-                <ItemsControl Grid.Row="2"
-                              ItemsSource="{Binding DisplayedItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="settings:SettingItem">
-                            <controls:SettingItemControl />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Grid>
-        </ScrollViewer>
+            <!-- 底部按钮栏 -->
+            <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                    Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16,12">
+                <Grid>
+                    <templatedcontrols:SlideTipBar BarId="SettingsTipBar">
+                        <templatedcontrols:SlideTip Duration="0:0:3" Id="apply">
+                            <TextBlock Text="成功运用新的配置项！" />
+                        </templatedcontrols:SlideTip>
+                        <templatedcontrols:SlideTip Duration="0:0:3" Id="reset_all">
+                            <TextBlock Text="成功重置所有配置项！" />
+                        </templatedcontrols:SlideTip>
+                        <templatedcontrols:SlideTip Duration="0:0:3" Id="reset_group">
+                            <TextBlock Text="成功重置该分组下的所有配置项！" />
+                        </templatedcontrols:SlideTip>
+                    </templatedcontrols:SlideTipBar>
 
-        <!-- 底部按钮栏 -->
-        <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
-                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
-                BorderThickness="0,1,0,0"
-                Padding="16,12">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
-                <Button Content="{uiloc:Loc Key=Cancel}"
-                        Command="{Binding CancelCommand}" />
-                <Button Content="{uiloc:Loc Key=Apply}"
-                        Command="{Binding ApplyCommand}"
-                        Theme="{StaticResource AccentButton}" />
-            </StackPanel>
-        </Border>
-    </Grid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                        <Button Content="{uiloc:Loc Key=Cancel}"
+                                Command="{Binding CancelCommand}" />
+                        <Button Content="{uiloc:Loc Key=Apply}"
+                                Command="{Binding ApplyCommand}"
+                                Theme="{StaticResource AccentButton}" />
+                        <Button Content="{uiloc:Loc Key=Setting-OK}"
+                                Command="{Binding OKCommand}"
+                                Theme="{StaticResource AccentButton}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Border>
 </Window>

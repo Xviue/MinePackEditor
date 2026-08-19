@@ -96,7 +96,7 @@ namespace MinePackEditor.Models.Settings
 
         private List<FileAssociation> _fileAssociations = new();
         [ConfigItem("editor.fileAssociations", "Editor", null,
-            EditorType = SettingEditorType.ListEditor)]
+            EditorType = SettingEditorType.ListEditor, DisplayMemberPath = "Extension", AllowListEdit = true)]
         public List<FileAssociation> FileAssociations
         {
             get => _fileAssociations;
@@ -106,7 +106,7 @@ namespace MinePackEditor.Models.Settings
         // ==================== Session ====================
         private List<string> _lastOpenDirectories = new();
         [ConfigItem("session.lastOpenDirectories", "Session", null,
-            EditorType = SettingEditorType.ListEditor)]
+            EditorType = SettingEditorType.ListEditor, DisplayMemberPath = "FullPath", AllowListEdit = false)]
         public List<string> LastOpenDirectories
         {
             get => _lastOpenDirectories;
@@ -115,7 +115,7 @@ namespace MinePackEditor.Models.Settings
 
         private List<string> _lastOpenFiles = new();
         [ConfigItem("session.lastOpenFiles", "Session", null,
-            EditorType = SettingEditorType.ListEditor)]
+            EditorType = SettingEditorType.ListEditor, DisplayMemberPath = "FullPath", AllowListEdit = false)]
         public List<string> LastOpenFiles
         {
             get => _lastOpenFiles;

@@ -1,18 +1,31 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MinePackEditor.Assets.Localization.Settings;
+using MinePackEditor.Managers;
 using MinePackEditor.Models.Settings;
 using MinePackEditor.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Text.Json;
 
 namespace MinePackEditor.ViewModels;
 
-public partial class SettingsWindowViewModel : ObservableObject
+public partial class SettingsWindowViewModel : ObservableObject, ICloseable
 {
     private readonly SettingsMenuBuilder _menuBuilder = new();
+    private readonly JsonSerializerOptions _cloneOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = false
+    };
+
+    /// <summary>
+    /// 工作副本：用户在此实例上修改，Apply 时才写回原始单例
+    /// </summary>
+    private AppSettings _workingSettings = new();
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FilteredMenuTree))]
@@ -38,22 +51,18 @@ public partial class SettingsWindowViewModel : ObservableObject
 
     public bool IsSearchActive => !string.IsNullOrWhiteSpace(SearchText);
 
-    /// <summary>
-    /// 右侧显示的配置项。
-    /// - 搜索结果节点：显示其 Items（扁平匹配项）
-    /// - 保留分支节点：在原始树中查找并显示完整 FlattenedItems
-    /// </summary>
+    public IRelayCommand<SettingItem?> RevertItemCommand { get; private set; } = null!;
+
+    public event EventHandler? RequestCancelConfirmation;
+    private readonly List<SettingItem> _allSettingItems = new();
+
     public ObservableCollection<SettingItem> DisplayedItems
     {
         get
         {
             if (SelectedNode == null) return new ObservableCollection<SettingItem>();
-
-            // 搜索结果节点特殊处理
             if (SelectedNode.Id == "SearchResult")
                 return SelectedNode.Items;
-
-            // 保留分支节点：在原始完整树中查找对应节点，显示其完整内容
             var originalNode = FindNodeById(MenuTree, SelectedNode.Id);
             return originalNode?.FlattenedItems ?? new ObservableCollection<SettingItem>();
         }
@@ -62,10 +71,64 @@ public partial class SettingsWindowViewModel : ObservableObject
     public bool HasDisplayedItems => DisplayedItems.Count > 0;
 
     public event EventHandler? RequestClose;
+    private IDialogService? _dialogService;
+
+    public SettingsWindowViewModel(IDialogService dialogService)
+    {
+        this._dialogService = dialogService;
+        Initialize();
+    }
 
     public SettingsWindowViewModel()
     {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        _workingSettings = DeepClone(SettingsService.Instance.Settings);
         BuildMenuTree();
+
+        RequestCancelConfirmation += OnRequestCancelConfirmation;
+
+        RevertItemCommand = new RelayCommand<SettingItem?>(
+        execute: item =>
+        {
+            if (item != null)
+                item.CurrentValue = item.OriginalValue;
+        },
+        canExecute: item => item?.IsModified == true
+        );
+    }
+
+    /// <summary>
+    /// 点击取消后，执行的事件
+    /// </summary>
+    private async void OnRequestCancelConfirmation(object? sender, EventArgs e)
+    {
+        if (_dialogService == null) return;
+        var result = await _dialogService.ShowYesNoCancelAsync("是否保存?","是否保存已修改的配置项？", "保存", "丢弃");
+        if(result == DialogResult.OK)
+        {
+            CopyToOriginal(_workingSettings, SettingsService.Instance.Settings);
+            SettingsService.Instance.Save();
+            RequestClose?.Invoke(this, EventArgs.Empty);
+        } else if(result == DialogResult.No)
+        {
+            RequestClose?.Invoke(this, EventArgs.Empty);
+        } else
+        {
+            return;
+        }
+    }
+
+    /// <summary>
+    /// 通过 JSON 序列化/反序列化实现深拷贝
+    /// </summary>
+    private AppSettings DeepClone(AppSettings source)
+    {
+        var json = JsonSerializer.Serialize(source, _cloneOptions);
+        return JsonSerializer.Deserialize<AppSettings>(json, _cloneOptions) ?? new AppSettings();
     }
 
     private void BuildMenuTree()
@@ -76,11 +139,36 @@ public partial class SettingsWindowViewModel : ObservableObject
             new() { LabelKey = "Lang.English", Value = "en-us" }
         });
 
-        MenuTree = _menuBuilder.Build(SettingsService.Instance.Settings);
+        // 关键：使用工作副本构建菜单树，所有 SettingItem 绑定到 _workingSettings
+        MenuTree = _menuBuilder.Build(_workingSettings);
         SelectedNode = FindFirstLeaf(MenuTree.FirstOrDefault());
+
+        _allSettingItems.Clear();
+        CollectAllSettingItems(MenuTree);
     }
 
-    #region === 搜索视图构建 ===
+    private void CollectAllSettingItems(IEnumerable<SettingsNode> nodes)
+    {
+        foreach (var node in nodes)
+        {
+            foreach (var item in node.Items)
+            {
+                _allSettingItems.Add(item);
+                item.PropertyChanged += OnSettingItemPropertyChanged;
+            }
+            CollectAllSettingItems(node.Children);
+        }
+    }
+
+    private void OnSettingItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SettingItem.IsModified))
+        {
+            RevertItemCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    #region === 搜索视图构建（逻辑不变，基于 MenuTree） ===
 
     private ObservableCollection<SettingsNode> GetSearchTree(string keyword)
     {
@@ -92,21 +180,16 @@ public partial class SettingsWindowViewModel : ObservableObject
         return _cachedSearchTree;
     }
 
-    /// <summary>
-    /// 构建搜索视图：
-    /// 1. 合成搜索结果节点（全局扁平匹配项）
-    /// 2. 完整保留原始树中"路径上有匹配"的所有分支
-    /// </summary>
     private ObservableCollection<SettingsNode> BuildSearchMenuTree(string keyword)
     {
         var result = new ObservableCollection<SettingsNode>();
         var lower = keyword.ToLowerInvariant();
 
-        // 1. 合成搜索结果节点：包含所有匹配的配置项（不分分类，扁平化）
+        // 1. 合成搜索结果节点
         var searchResultNode = new SettingsNode
         {
             Id = "SearchResult",
-            DisplayNameKey = "SearchResultTemplate", // 可配置为 "{0}的搜索结果..."
+            DisplayNameKey = "SearchResultTemplate",
             DisplayNameOverride = $"{SettingsLang.Get("SearchResultPrefix")}{keyword}{SettingsLang.Get("SearchResultSuffix")}",
             Order = -1
         };
@@ -119,41 +202,30 @@ public partial class SettingsWindowViewModel : ObservableObject
         if (searchResultNode.Items.Count > 0)
             result.Add(searchResultNode);
 
-        // 2. 保留路径上有匹配的完整分支（不裁剪任何子节点/配置项）
+        // 2. 保留完整分支
         foreach (var root in MenuTree)
         {
             if (ShouldPreserveBranch(root, lower))
-            {
                 result.Add(root);
-            }
         }
 
         return result;
     }
 
-    /// <summary>
-    /// 判断分支是否应该完整保留：节点自身、任意后代节点、或任意配置项的本地化文本匹配
-    /// </summary>
     private static bool ShouldPreserveBranch(SettingsNode node, string lower)
     {
-        // 节点自身本地化名称匹配？
         if (SettingsLang.Get(node.DisplayNameKey).Contains(lower, StringComparison.OrdinalIgnoreCase))
             return true;
-
-        // 任意后代节点匹配？
         foreach (var child in node.Children)
         {
             if (ShouldPreserveBranch(child, lower))
                 return true;
         }
-
-        // 任意配置项匹配？
         foreach (var item in node.Items)
         {
             if (ItemMatches(item, lower))
                 return true;
         }
-
         return false;
     }
 
@@ -211,24 +283,21 @@ public partial class SettingsWindowViewModel : ObservableObject
     #region === 命令 ===
 
     /// <summary>
-    /// 重置当前选中节点下的所有配置项。
-    /// 搜索结果节点时，重置其 Items 中所有匹配的配置项。
-    /// 保留分支节点时，重置原始树中对应节点的完整内容。
+    /// 重置当前选中节点下的所有配置项（仅影响工作副本）
     /// </summary>
     [RelayCommand]
     private void ResetCurrentGroup()
     {
+        SlideTipBarManager.Activate("SettingsTipBar", "reset_group");
         if (SelectedNode == null) return;
 
         if (SelectedNode.Id == "SearchResult")
         {
-            // 搜索结果节点：重置其 Items 中所有匹配的配置项
             foreach (var item in SelectedNode.Items)
                 item.ResetToDefault();
         }
         else
         {
-            // 保留分支节点：在原始树中查找并重置完整内容
             var target = FindNodeById(MenuTree, SelectedNode.Id);
             if (target == null) return;
 
@@ -247,30 +316,92 @@ public partial class SettingsWindowViewModel : ObservableObject
             ResetNodeRecursive(child);
     }
 
+    /// <summary>
+    /// 重置所有配置项（仅影响工作副本）
+    /// </summary>
     [RelayCommand]
     private void ResetAll()
     {
-        SettingsService.Instance.Settings.ResetToDefaults();
+        SlideTipBarManager.Activate("SettingsTipBar", "reset-all");
+        _workingSettings.ResetToDefaults();
         _cachedSearchTree = null;
-        BuildMenuTree();
+
+        // 关键修复：不再重建菜单树，避免 SettingItem 被重新 Attach 导致 OriginalValue 丢失
+        // SettingItem 通过 AppSettings.PropertyChanged 自动更新 _currentValue，OriginalValue 保持不变
+        if (IsSearchActive)
+        {
+            OnPropertyChanged(nameof(FilteredMenuTree));
+        }
+
+        OnPropertyChanged(nameof(DisplayedItems));
+        OnPropertyChanged(nameof(HasDisplayedItems));
     }
 
+    /// <summary>
+    /// 将工作副本的值复制回原始单例并保存，然后关闭窗口
+    /// </summary>
+    [RelayCommand]
+    private void OK()
+    {
+        CopyToOriginal(_workingSettings, SettingsService.Instance.Settings);
+        SettingsService.Instance.Save();
+        RequestClose?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// 将工作副本的值复制回原始单例并保存
+    /// </summary>
     [RelayCommand]
     private void Apply()
     {
+        SlideTipBarManager.Activate("SettingsTipBar", "apply");
+        CopyToOriginal(_workingSettings, SettingsService.Instance.Settings);
         SettingsService.Instance.Save();
-        RequestClose?.Invoke(this, EventArgs.Empty);
+    }
+
+
+
+    /// <summary>
+    /// 将工作副本的属性值逐个复制回原始单例
+    /// </summary>
+    private static void CopyToOriginal(AppSettings source, AppSettings target)
+    {
+        foreach (var (prop, attr) in AppSettings.GetConfigMetas())
+        {
+            if (!prop.CanWrite) continue;
+            var value = prop.GetValue(source);
+            prop.SetValue(target, value);
+        }
     }
 
     [RelayCommand]
     private void Cancel()
     {
-        RequestClose?.Invoke(this, EventArgs.Empty);
+        if (_allSettingItems.Any(i => i.IsModified))
+        {
+            RequestCancelConfirmation?.Invoke(this, EventArgs.Empty);
+            return;
+        } else
+        {
+            RequestClose?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    [RelayCommand]
+    private void ResetItem(SettingItem? item)
+    {
+        item?.ResetToDefault();
+    }
+
+    [RelayCommand]
+    private void BackItem(SettingItem? item)
+    {
+
     }
 
     #endregion
 
-    #region === 属性变更 ===
+    #region === 属性变更通知 ===
 
     partial void OnSearchTextChanged(string value)
     {

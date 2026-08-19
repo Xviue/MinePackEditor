@@ -19,19 +19,21 @@ namespace MinePackEditor.Service
     public interface IDialogService
     {
         Task ShowMessageAsync(string title, string message, MessageType type = MessageType.Info);
-
-        // 原来的两态确认（保留，不破坏已有代码）
         Task<bool> ShowConfirmAsync(string title, string message, string yesText = "确定", string noText = "取消");
+        Task<DialogResult> ShowYesNoCancelAsync(string title, string message, string yesText = "是", string noText = "否", string cancelText = "取消");
 
-        // 新增：三态确认（是 / 否 / 取消）
-        Task<DialogResult> ShowYesNoCancelAsync(
-            string title,
-            string message,
-            string yesText = "是",
-            string noText = "否",
-            string cancelText = "取消");
-
+        // 有返回值
         Task<TResult?> ShowDialogAsync<TViewModel, TResult>(TViewModel viewModel)
-            where TViewModel : DialogViewModelBase<TResult>;
+            where TViewModel : class, IResultDialog<TResult>;
+
+        // 无返回值
+        Task ShowDialogAsync<TViewModel>(TViewModel viewModel)
+            where TViewModel : class, ICloseable;
+
+        /// <summary>
+        /// 以非模态方式显示窗口。主窗口保持可操作，窗口可独立拖动。
+        /// </summary>
+        Task ShowWindowAsync<TViewModel>(TViewModel viewModel)
+            where TViewModel : class, ICloseable;
     }
 }

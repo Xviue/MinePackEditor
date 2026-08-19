@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
   <data name="Apply" xml:space="preserve">
     <value>运用</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
+  </data>
+  <data name="DefaultValue" xml:space="preserve">
+    <value>默认值：</value>
   </data>
   <data name="MainTitle" xml:space="preserve">
     <value>Minecraft 数据包编辑器</value>
@@ -132,6 +138,9 @@
   <data name="Menu.File.Save-all" xml:space="preserve">
     <value>全部保存</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>删除</value>
+  </data>
   <data name="ResetAll" xml:space="preserve">
     <value>全部重置</value>
   </data>
@@ -140,6 +149,12 @@
   </data>
   <data name="SearchSettingsPlaceholder" xml:space="preserve">
     <value>搜索配置项、分组...</value>
+  </data>
+  <data name="Setting-Modified" xml:space="preserve">
+    <value>(*已修改)</value>
+  </data>
+  <data name="Setting-OK" xml:space="preserve">
+    <value>确定</value>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
     <value>设置</value>

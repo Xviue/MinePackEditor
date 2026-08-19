@@ -4,8 +4,10 @@
         xmlns:vm="using:MinePackEditor.ViewModels"
         xmlns:controls="using:MinePackEditor.Controls"
         xmlns:selectors="using:MinePackEditor.Selectors"
+        xmlns:templatedcontrols="using:MinePackEditor.Controls.TemplatedControls"
         xmlns:models="using:MinePackEditor.Models"
         xmlns:uiloc="using:MinePackEditor.Localization.UI"
+        xmlns:usercontrols="using:MinePackEditor.Controls.UserControls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1450" d:DesignHeight="1000"
@@ -14,7 +16,11 @@
         WindowDecorations="BorderOnly"
         RequestedThemeVariant="Default"
         ExtendClientAreaToDecorationsHint="True"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/icon.ico"
+        TextOptions.TextHintingMode="Strong"
+        TextOptions.TextRenderingMode="SubpixelAntialias"
+        RenderOptions.BitmapInterpolationMode="HighQuality"
+        RenderOptions.EdgeMode="Unspecified"
         Title="{uiloc:Loc Key=MainTitle}">
 
     <Design.DataContext>
@@ -42,50 +48,6 @@
     </Window.Styles>
 
     <Window.Resources>
-        <ControlTheme x:Key="CloseButtonTheme" TargetType="Button">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="CornerRadius" Value="5" />
-
-            <Setter Property="Transitions">
-                <Transitions>
-                    <BrushTransition Property="Background" Duration="0:0:0.1"/>
-                    <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
-                </Transitions>
-            </Setter>
-
-            <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="#E81123"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
-
-            <Style Selector="^:pressed">
-                <Setter Property="Background" Value="#F1707A"/>
-            </Style>
-        </ControlTheme>
-
-        <ControlTheme x:Key="CaptionButtonTheme" TargetType="Button">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="CornerRadius" Value="5" />
-
-            <Setter Property="Transitions">
-                <Transitions>
-                    <BrushTransition Property="Background" Duration="0:0:0.1"/>
-                    <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
-                </Transitions>
-            </Setter>
-
-            <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="#C7C7C7"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
-
-            <Style Selector="^:pressed">
-                <Setter Property="Background" Value="#ABABAB"/>
-            </Style>
-        </ControlTheme>
-
         <ControlTheme x:Key="EditBarButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="Black"/>
@@ -115,39 +77,40 @@
 
         <Grid x:Name="TitleBarGird" Grid.Row="0">
             <Grid ColumnDefinitions="Auto,1*">
-                <Menu FontSize="13" FontFamily="MiSans">
+                <Menu FontSize="13">
                     <MenuItem Header="文件(_F)" >
-                        <MenuItem Header="新建(_N)" />
-                        <MenuItem Header="打开文件夹(_O)" >
+                        <MenuItem Header="*新建(_N)" />
+                        <MenuItem Header="打开(_O)" >
                             <MenuItem Header="文件夹(_D)" InputGesture="Ctrl+Alt+Shift+O"
                                       Command="{Binding DirectorySetCommand}"/>
                             <MenuItem Header="文件(_F)" InputGesture="Ctrl+O"
                                       Command="{Binding OpenFilesCommand}"/>
-                            <MenuItem Header="工作区(_P)" InputGesture="Ctrl+Shift+O" />
+                            <MenuItem Header="*工作区(_P)" InputGesture="Ctrl+Shift+O" />
                         </MenuItem>
                         <MenuItem Header="添加" InputGesture="Ctrl+D">
                             <MenuItem Header="文件夹(_D)"
                                       Command="{Binding DirectoryOpenCommand}" />
-                            <MenuItem Header="工作区(_P)" />
+                            <MenuItem Header="*工作区(_P)" />
                         </MenuItem>
 
                         <Separator />
 
                         <MenuItem Header="{uiloc:Loc Key=Menu.File.Save}" InputGesture="Ctrl+S" Command="{Binding SaveCurrentCommand}" />
-                        <MenuItem Header="另存为" />
+                        <MenuItem Header="*另存为" />
                         <MenuItem Header="{uiloc:Loc Key=Menu.File.Save-all}" InputGesture="Ctrl+Shift+S" Command="{Binding SaveAllCommand}">
 
                         </MenuItem>
 
                         <Separator />
 
-                        <MenuItem Header="关闭" InputGesture="Ctrl+S">
+                        <MenuItem Header="关闭" InputGesture="Ctrl+S" 
+                                  Command="{Binding CloseTabCommand}" CommandParameter="{Binding SelectedDocument}">
                         </MenuItem>
                         <MenuItem Header="退出" InputGesture="Alt+F4" Command="{Binding ExitCommand}">
                         </MenuItem>
                     </MenuItem>
 
-                    <MenuItem Header="编辑(_E)">
+                    <MenuItem Header="*编辑(_E)">
                         <MenuItem Header="转到">
                             <MenuItem Header="转到行" />
                             <MenuItem Header="转到文本" />
@@ -189,18 +152,22 @@
                                   Command="{Binding OpenSettingsWindowCommand}">
                         </MenuItem>
 
-                        <MenuItem Header="项目设置" InputGesture="Ctrl+I">
+                        <MenuItem Header="*项目设置" InputGesture="Ctrl+I">
                         </MenuItem>
 
                         <Separator />
                     </MenuItem>
 
                     <MenuItem Header="窗口(_W)">
-
+                        <MenuItem Header="设置(_S)" Command="{Binding OpenSettingsWindowCommand}" />
+                        <MenuItem Header="关于软件(_A)" Command="{Binding OpenAboutCommand}" />
+                        <Separator />
                     </MenuItem>
 
                     <MenuItem Header="帮助(_H)">
                         <MenuItem Header="关于软件(_A)" Command="{Binding OpenAboutCommand}" />
+                        <MenuItem Header="开源仓库(_O)" Command="{Binding OpenRepositoriesWebCommand}" />
+                        <MenuItem Header="帮助(_W)" Command="{Binding OpenHelpWebCommand}" />
                     </MenuItem>
                 </Menu>
 
@@ -219,31 +186,28 @@
                            Foreground="{DynamicResource DefaultTextFgBrush}"
                            Text="{Binding ProjectName}"
                            FontWeight="Bold"
+                           TextOptions.TextHintingMode="Light"
                            VerticalAlignment="Center" />
             </Border>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,-2,0"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                        Margin="0,0,-2,0"
                         DockPanel.Dock="Right">
-                <Button Width="30" Height="30"
-                        Click="MinimizeBtn_Click" Theme="{StaticResource CaptionButtonTheme}" >
-                    <Canvas Width="10" Height="10">
-                        <Rectangle Fill="{DynamicResource DefaultTextFgBrush}" Width="10" Height="1" Canvas.Top="5" />
-                    </Canvas>
-                </Button>
-                <Button x:Name="MaximizeBtn" Width="30" Height="30"
-                        Click="MaximizeBtn_Click" Theme="{StaticResource CaptionButtonTheme}">
-                    <Canvas Width="10" Height="10">
-                        <Rectangle Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1"
-                                   Width="9" Height="9" Canvas.Left="1" Canvas.Top="1" />
-                    </Canvas>
-                </Button>
-                <Button Width="30" Height="30" Command="{Binding ExitCommand}"
-                        Theme="{StaticResource CloseButtonTheme}">
-                    <Canvas Width="10" Height="10" Background="Transparent">
-                        <Line StartPoint="1,1.5" EndPoint="9,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                        <Line StartPoint="9,1.5" EndPoint="1,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                    </Canvas>
-                </Button>
+                <templatedcontrols:ChromeButton IconData="{StaticResource ChromeIconMinimize}"
+                                           IconSize="12"
+                                           IconThickness="1.6"
+                                           Width="30" Height="30" Click="MinimizeBtn_Click" />
+                <templatedcontrols:ChromeButton IconData="{StaticResource ChromeIconMaximize}"
+                                           IconSize="12"
+                                           IconThickness="1.6"
+                                           Width="30" Height="30" x:Name="MaximizeBtn" Click="MaximizeBtn_Click" />
+                <templatedcontrols:ChromeButton IconData="{StaticResource ChromeIconClose}"
+                                           Width="30" Height="30"
+                                           IconSize="12"
+                                           IconThickness="1.6"
+                                           PointeroverColor="{StaticResource RedPointeroverBrush}"
+                                           PressedColor="{StaticResource RedPressedBrush}"
+                                           Command="{Binding ExitCommand}" />
             </StackPanel>
 
         </Grid>
@@ -373,43 +337,40 @@
                                     </Style>
 
                                     <Style Selector="TabItem:pointerover">
-                                        <Setter Property="Background" Value="#c8c8c8"/>
+                                        <Setter Property="Background" Value="#e8e8e8"/>
+                                        <Setter Property="Foreground" Value="Black"/>
                                     </Style>
 
                                     <!--- TabItem Close Button -->
-                                    <Style Selector="TabItem Button">
+                                    <Style Selector="TabItem templatedcontrols|ChromeButton">
                                         <Setter Property="IsVisible" Value="False"/>
                                     </Style>
 
-                                    <Style Selector="TabItem:selected Button">
+                                    <Style Selector="TabItem:selected templatedcontrols|ChromeButton">
                                         <Setter Property="IsVisible" Value="True"/>
                                     </Style>
 
-                                    <Style Selector="TabItem:pointerover Button">
+                                    <Style Selector="TabItem:pointerover templatedcontrols|ChromeButton">
                                         <Setter Property="IsVisible" Value="True"/>
                                     </Style>
                                 </TabControl.Styles>
 
                                 <TabControl.ItemTemplate>
                                     <DataTemplate DataType="models:FileDocument">
-                                        <StackPanel Orientation="Horizontal" Spacing="8"
-                                                    HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <TextBlock HorizontalAlignment="Center"
+                                        <Grid ColumnDefinitions="Auto,30"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"
                                                        Text="{Binding DisplayName}" FontSize="12" />
-                                            <Button HorizontalAlignment="Center"
-                                                    Width="20" Height="20"
-                                                    Background="Transparent" BorderThickness="0"
-                                                    x:DataType="vm:MainViewModel"
-                                                    Command="{Binding $parent[TabControl].DataContext.CloseTabCommand}"
-                                                    CommandParameter="{Binding}">
-                                                <Canvas Width="10" Height="10"
-                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                        Background="Transparent">
-                                                    <Line StartPoint="1,1.5" EndPoint="9,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                                                    <Line StartPoint="9,1.5" EndPoint="1,9.5" Stroke="{DynamicResource DefaultTextFgBrush}" StrokeThickness="1.2" />
-                                                </Canvas>
-                                            </Button>
-                                        </StackPanel>
+                                            <templatedcontrols:ChromeButton IconData="{StaticResource ChromeIconClose}"
+                                                                       Grid.Column="1"
+                                                                       Height="15" Width="15"
+                                                                       IconSize="8"
+                                                                       IconThickness="1.6"
+                                                                       Command="{Binding $parent[TabControl].DataContext.CloseTabCommand}"
+                                                                       CommandParameter="{Binding}"
+                                                                       PointeroverColor="#bdbdbd"
+                                                                       PressedColor="#d6d6d6"/>
+                                        </Grid>
                                     </DataTemplate>
                                 </TabControl.ItemTemplate>
 

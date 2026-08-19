@@ -1,0 +1,94 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:MinePackEditor.Controls.TemplatedControls">
+
+    <Design.PreviewWith>
+        <StackPanel Orientation="Horizontal" Height="90">
+            <local:ChromeButton IconData="{StaticResource ChromeIconClose}"
+                                PointeroverColor="{StaticResource RedPointeroverBrush}"
+                                PressedColor="{StaticResource RedPressedBrush}" />
+            <local:ChromeButton IconData="{StaticResource ChromeIconMinimize}"/>
+            <local:ChromeButton IconData="{StaticResource ChromeIconMaximize}" />
+            <local:ChromeButton IconData="{StaticResource ChromeIconRestore}" />
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+
+        <StreamGeometry x:Key="ChromeIconClose">M2,2 L14,14 M14,2 L2,14</StreamGeometry>
+        <StreamGeometry x:Key="ChromeIconMinimize">M2,8 L14,8</StreamGeometry>
+        <StreamGeometry x:Key="ChromeIconMaximize">M2,2 L14,2 L14,14 L2,14 Z</StreamGeometry>
+
+        <StreamGeometry x:Key="ChromeIconRestore">
+            M2,6 L10,6 L10,14 L2,14 Z M6,2 L14,2 L14,10 L6,10 Z
+        </StreamGeometry>
+
+        <SolidColorBrush x:Key="RedPointeroverBrush">#CC0000</SolidColorBrush>
+        <SolidColorBrush x:Key="RedPressedBrush">#FF4444</SolidColorBrush>
+
+        <ControlTheme x:Key="{x:Type local:ChromeButton}" TargetType="local:ChromeButton">
+            <Setter Property="PointeroverColor" Value="#ABABAB" />
+            <Setter Property="PressedColor" Value="#C7C7C7" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="IconBrush" Value="{DynamicResource DefaultTextFgBrush}" />
+            <Setter Property="IconSize" Value="16" />
+            <Setter Property="IconThickness" Value="1.5" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="AutomationProperties.Name" Value="Window Action" />
+
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.1" />
+                </Transitions>
+            </Setter>
+
+            <Setter Property="Template">
+                <ControlTemplate TargetType="local:ChromeButton">
+                    <Border Name="PART_Background"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}">
+                        <!--
+                        Viewbox 负责将内部 16×16 画布均匀缩放到 IconSize。
+                        StretchDirection="Both" 防止图标被单向拉伸变形。
+                        -->
+                        <Viewbox Width="{TemplateBinding IconSize}"
+                                 Height="{TemplateBinding IconSize}"
+                                 Stretch="Uniform"
+                                 StretchDirection="Both"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center">
+                            <!--
+                            Canvas 固定 16×16，与图标几何体坐标系 1:1 对应。
+                            ClipToBounds="False" 显式关闭裁剪，防止圆角 Border
+                            或父容器误切 Round 线帽的延伸部分。
+                            -->
+                            <Canvas Width="16" Height="16"
+                                    ClipToBounds="False">
+                                <Path Data="{TemplateBinding IconData}"
+                                      Stroke="{TemplateBinding IconBrush}"
+                                      StrokeThickness="{TemplateBinding IconThickness}"
+                                      Stretch="None"
+                                      StrokeLineCap="Round" />
+                            </Canvas>
+                        </Viewbox>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="{Binding $self.PointeroverColor}" />
+            </Style>
+
+            <Style Selector="^:pressed">
+                <Setter Property="Background" Value="{Binding $self.PressedColor}" />
+            </Style>
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>

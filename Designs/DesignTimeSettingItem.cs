@@ -1,4 +1,5 @@
-﻿using MinePackEditor.Models.Settings;
+﻿using MinePackEditor.Models;
+using MinePackEditor.Models.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

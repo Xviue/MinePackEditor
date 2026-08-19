@@ -55,6 +55,9 @@ public partial class MainViewModel : ObservableObject
     public IRelayCommand ExitCommand { get; private set; } = null!;
     public IRelayCommand OpenAboutCommand { get; private set; } = null!;
 
+    public IRelayCommand OpenRepositoriesWebCommand { get; private set; } = null!;
+    public IRelayCommand OpenHelpWebCommand { get; private set; } = null!;
+
     // ── 私有 ──
     private readonly IFilePickerService? _folderPicker;
     private readonly IDialogService? _dialogService;
@@ -70,7 +73,7 @@ public partial class MainViewModel : ObservableObject
             LoadDesignTimeData();
     }
 
-    public MainViewModel(IFilePickerService folderPickerService,IDialogService dialogService, WindowService windowService) : this()
+    public MainViewModel(IFilePickerService folderPickerService, IDialogService dialogService, WindowService windowService) : this()
     {
         _folderPicker = folderPickerService;
         _dialogService = dialogService;
@@ -87,7 +90,7 @@ public partial class MainViewModel : ObservableObject
 
         CloseDirectoryCommand = new RelayCommand<FileSystemNode?>(CloseWorkspace);
         OpenTabCommand = new AsyncRelayCommand<string?>(OpenFileCoreAsync);
-        CloseTabCommand = new AsyncRelayCommand<FileDocument?>(CloseFileCore);
+        CloseTabCommand = new AsyncRelayCommand<FileDocument?>(CloseFileCore, _ => !IsSelectedDocumentNull);
         SaveCurrentCommand = new RelayCommand(SaveCurrent, () => CanSaveCurrent);
         SaveAllCommand = new RelayCommand(SaveAll, () => CanSaveAll);
 
@@ -96,6 +99,9 @@ public partial class MainViewModel : ObservableObject
 
         ExitCommand = new AsyncRelayCommand(ExitWindowAsync);
         OpenAboutCommand = new AsyncRelayCommand(OpenAboutWindow);
+
+        OpenRepositoriesWebCommand = new RelayCommand(() => OpenWeb("https://github.com/Xviue/MinePackEditor"));
+        OpenHelpWebCommand = new RelayCommand(() => OpenWeb("https://github.com/Xviue/MinePackEditor/wiki"));
     }
 
     // 窗口操作
@@ -128,17 +134,33 @@ public partial class MainViewModel : ObservableObject
         _windowService.Close();
     }
 
+    private static void OpenWeb(String url)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(url)
+            {
+                UseShellExecute = true  // 关键：让操作系统决定用默认程序打开
+            });
+        }
+        catch (Exception ex)
+        {
+            // 兜底处理（某些精简版 Linux 可能不支持）
+            Debug.WriteLine($"打开链接失败: {ex.Message}");
+        }
+    }
+
     // ── 打开窗口 ──
     private async Task OpenSettingsWindow()
     {
-        var settingsWindow = new SettingsWindow();
-        //settingsWindow.DataContext = new SettingsWindowViewModel(); 已添加
-        settingsWindow.Show();
+        if (_dialogService == null) return;
+        var vm = new SettingsWindowViewModel(_dialogService);
+        await _dialogService.ShowWindowAsync(vm);
     }
 
     private async Task OpenAboutWindow()
     {
-        var aboutWindow= new AboutWindow();
+        var aboutWindow = new AboutWindow();
         aboutWindow.Show();
     }
 
@@ -149,10 +171,13 @@ public partial class MainViewModel : ObservableObject
         root.IsExpanded = true;
         OpenDirectories.Add(root);
 
-        var doc = new FileDocument("Program.cs", @"C:\Demo\Program.cs",
+        var doc1 = new FileDocument("Program.cs", @"C:\Demo\Program.cs",
             "using System;\n\nclass Program\n{\n    static void Main() => Console.WriteLine(\"Hello\");\n}");
-        OpenFiles.Add(doc);
-        SelectedDocument = doc;
+        var doc2 = new FileDocument("Test.txt", @"C:\Demo\Test.txt",
+            "There is a test text doc.");
+        OpenFiles.Add(doc1);
+        OpenFiles.Add(doc2);
+        SelectedDocument = doc1;
     }
 
     // ── 切换标签自动保存 ──
@@ -353,6 +378,7 @@ public partial class MainViewModel : ObservableObject
         catch (Exception ex) { ActionLabelText = $"保存失败: {ex.Message}"; }
     }
     private bool CanSaveCurrent => SelectedDocument?.IsModified == true;
+    private bool IsSelectedDocumentNull => SelectedDocument == null;
 
     private void SaveAll()
     {

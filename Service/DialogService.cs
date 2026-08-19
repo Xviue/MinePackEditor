@@ -63,9 +63,11 @@ namespace MinePackEditor.Service
             return await dialog.ShowDialog(owner);
         }
 
-        // 自定义弹窗（保持不变）
+        // 自定义弹窗
+
+        // 有返回值版本
         public async Task<TResult?> ShowDialogAsync<TViewModel, TResult>(TViewModel viewModel)
-            where TViewModel : DialogViewModelBase<TResult>
+            where TViewModel : class, IResultDialog<TResult>
         {
             if (!_vmToWindowMap.TryGetValue(typeof(TViewModel), out var windowType))
                 throw new InvalidOperationException($"未注册 {typeof(TViewModel).Name}");
@@ -86,6 +88,69 @@ namespace MinePackEditor.Service
             else window.Show();
 
             return await tcs.Task;
+        }
+
+        // 无返回值版本（新增）
+        public async Task ShowDialogAsync<TViewModel>(TViewModel viewModel)
+            where TViewModel : class, ICloseable
+        {
+            if (!_vmToWindowMap.TryGetValue(typeof(TViewModel), out var windowType))
+                throw new InvalidOperationException($"未注册 {typeof(TViewModel).Name}");
+
+            var window = (Window)Activator.CreateInstance(windowType)!;
+            window.DataContext = viewModel;
+
+            var tcs = new TaskCompletionSource<object?>();
+            viewModel.RequestClose += (_, _) =>
+            {
+                tcs.TrySetResult(null);
+                window.Close();
+            };
+            window.Closed += (_, _) => tcs.TrySetResult(null);
+
+            var owner = GetOwnerWindow();
+            if (owner != null) await window.ShowDialog(owner);
+            else window.Show();
+
+            await tcs.Task;
+        }
+
+        public async Task ShowWindowAsync<TViewModel>(TViewModel viewModel)
+            where TViewModel : class, ICloseable
+        {
+            if (!_vmToWindowMap.TryGetValue(typeof(TViewModel), out var windowType))
+                throw new InvalidOperationException($"未注册 {typeof(TViewModel).Name}");
+
+            var window = (Window)Activator.CreateInstance(windowType)!;
+            window.DataContext = viewModel;
+
+            var tcs = new TaskCompletionSource<object?>();
+
+            void OnRequestClose(object? s, EventArgs e)
+            {
+                tcs.TrySetResult(null);
+                window.Close();
+            }
+
+            void OnClosed(object? s, EventArgs e)
+            {
+                viewModel.RequestClose -= OnRequestClose;
+                tcs.TrySetResult(null);
+            }
+
+            viewModel.RequestClose += OnRequestClose;
+            window.Closed += OnClosed;
+
+            var owner = GetOwnerWindow();
+            if (owner != null)
+            {
+                window.Show(owner);
+            } else
+            {
+                window.Show();
+            }
+
+            await tcs.Task;
         }
     }
 }
